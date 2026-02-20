@@ -2,7 +2,7 @@
 
 ## Ссылки
 - [SonarCloud](https://sonarcloud.io/project/configuration?id=gimpelgit_music)
-- [Git репозиторий](https://github.com/gimpelgit/music)
+- [Git](https://github.com/gimpelgit/music)
 
 ## Задание 1
 
@@ -11,4 +11,5 @@
 ### План-факт
 
 План: (3 + 1 + 4 * 2 ) / 6 = 2 ч.
+
 Факт: 
