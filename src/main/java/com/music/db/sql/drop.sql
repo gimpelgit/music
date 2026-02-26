@@ -1,0 +1,10 @@
+DROP TABLE IF EXISTS user_favorites;
+DROP TABLE IF EXISTS playlists_tracks;
+DROP TABLE IF EXISTS tracks_genres;
+DROP TABLE IF EXISTS tracks_artists;
+DROP TABLE IF EXISTS playlists;
+DROP TABLE IF EXISTS tracks;
+DROP TABLE IF EXISTS albums;
+DROP TABLE IF EXISTS genres;
+DROP TABLE IF EXISTS artists;
+DROP TABLE IF EXISTS users;
