@@ -2,9 +2,17 @@ package com.music.entity;
 
 import jakarta.persistence.*;
 import java.util.Objects;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 @Entity
 @Table(name = "playlists_tracks")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class PlaylistTrack {
 
   @Id
@@ -22,44 +30,9 @@ public class PlaylistTrack {
   @Column(name = "position", nullable = false)
   private Integer position;
 
-  public PlaylistTrack() {
-  }
-
   public PlaylistTrack(Playlist playlist, Track track, Integer position) {
     this.playlist = playlist;
     this.track = track;
-    this.position = position;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public Playlist getPlaylist() {
-    return playlist;
-  }
-
-  public void setPlaylist(Playlist playlist) {
-    this.playlist = playlist;
-  }
-
-  public Track getTrack() {
-    return track;
-  }
-
-  public void setTrack(Track track) {
-    this.track = track;
-  }
-
-  public Integer getPosition() {
-    return position;
-  }
-
-  public void setPosition(Integer position) {
     this.position = position;
   }
 

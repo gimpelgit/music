@@ -1,0 +1,36 @@
+package com.music.dto;
+
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Size;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+
+import java.time.LocalDate;
+import java.util.List;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class UpdateTrackRequest {
+
+  @Size(max = 200, message = "Название трека не должно превышать 200 символов")
+  private String title;
+
+  private Long albumId;
+
+  @Min(value = 1, message = "Длительность трека должна быть положительным числом")
+  private Integer durationSeconds;
+
+  @Size(max = 255, message = "URL файла не должен превышать 255 символов")
+  private String fileUrl;
+
+  @Size(max = 5000, message = "Текст песни не должен превышать 5000 символов")
+  private String lyrics;
+
+  private LocalDate releaseDate;
+
+  private List<Long> artistIds;
+
+  private List<Long> genreIds;
+}

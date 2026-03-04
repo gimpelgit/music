@@ -1,17 +1,17 @@
 CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
-    email VARCHAR(100) UNIQUE NOT NULL,
-    password_hash VARCHAR(255) NOT NULL,
-    full_name VARCHAR(100) NOT NULL,
+    role VARCHAR(20) NOT NULL,
+    username VARCHAR(30) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    name VARCHAR(30) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    is_active BOOLEAN DEFAULT true
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 
 CREATE TABLE IF NOT EXISTS artists (
     id SERIAL PRIMARY KEY,
-    full_name VARCHAR(100) NOT NULL
+    name VARCHAR(100) NOT NULL
 );
 
 
@@ -75,3 +75,8 @@ CREATE TABLE IF NOT EXISTS user_favorites (
     track_id INTEGER REFERENCES tracks(id) ON DELETE CASCADE,
     PRIMARY KEY (user_id, track_id)
 );
+
+
+INSERT INTO roles (id, name) VALUES 
+(1, 'user'),
+(2, 'admin');

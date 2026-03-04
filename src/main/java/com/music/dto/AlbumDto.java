@@ -1,39 +1,21 @@
 package com.music.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class AlbumDto {
   private Long id;
+
+  @NotBlank(message = "Название альбома обязательно")
+  @Size(max = 200, message = "Название альбома не должно превышать 200 символов")
   private String title;
+
+  @Size(max = 255, message = "URL обложки не должен превышать 255 символов")
   private String coverImageUrl;
-
-  public AlbumDto() {}
-
-  public AlbumDto(Long id, String title, String coverImageUrl) {
-    this.id = id;
-    this.title = title;
-    this.coverImageUrl = coverImageUrl;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public String getTitle() {
-    return title;
-  }
-
-  public void setTitle(String title) {
-    this.title = title;
-  }
-
-  public String getCoverImageUrl() {
-    return coverImageUrl;
-  }
-
-  public void setCoverImageUrl(String coverImageUrl) {
-    this.coverImageUrl = coverImageUrl;
-  }
 }

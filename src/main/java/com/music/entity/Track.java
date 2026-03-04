@@ -1,6 +1,11 @@
 package com.music.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +16,10 @@ import com.music.dto.TrackDto;
 
 @Entity
 @Table(name = "tracks")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Track {
 
   @Id
@@ -55,11 +64,6 @@ public class Track {
   @OneToMany(mappedBy = "track")
   private List<PlaylistTrack> playlistTracks = new ArrayList<>();
 
-  @ManyToMany(mappedBy = "favoriteTracks")
-  private List<User> favoritedBy = new ArrayList<>();
-
-  public Track() {}
-
   public Track(String title, Album album, Integer durationSeconds,
                String fileUrl, String lyrics, LocalDate releaseDate) {
     this.title = title;
@@ -79,108 +83,17 @@ public class Track {
       .map(Genre::convertToDto)
       .toList();
 
-    String albumTitle = track.getAlbum() != null ? track.getAlbum().getTitle() : null;
-    Long albumId = track.getAlbum() != null ? track.getAlbum().getId() : null;
-
-    return new TrackDto(
-      track.getId(),
-      track.getTitle(),
-      albumId,
-      albumTitle,
-      track.getDurationSeconds(),
-      track.getFileUrl(),
-      track.getLyrics(),
-      track.getReleaseDate(),
-      artistDtos,
-      genreDtos
-    );
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public String getTitle() {
-    return title;
-  }
-
-  public void setTitle(String title) {
-    this.title = title;
-  }
-
-  public Album getAlbum() {
-    return album;
-  }
-
-  public void setAlbum(Album album) {
-    this.album = album;
-  }
-
-  public Integer getDurationSeconds() {
-    return durationSeconds;
-  }
-
-  public void setDurationSeconds(Integer durationSeconds) {
-    this.durationSeconds = durationSeconds;
-  }
-
-  public String getFileUrl() {
-    return fileUrl;
-  }
-
-  public void setFileUrl(String fileUrl) {
-    this.fileUrl = fileUrl;
-  }
-
-  public String getLyrics() {
-    return lyrics;
-  }
-
-  public void setLyrics(String lyrics) {
-    this.lyrics = lyrics;
-  }
-
-  public LocalDate getReleaseDate() {
-    return releaseDate;
-  }
-
-  public void setReleaseDate(LocalDate releaseDate) {
-    this.releaseDate = releaseDate;
-  }
-
-  public List<Artist> getArtists() {
-    return artists;
-  }
-
-  public void setArtists(List<Artist> artists) {
-    this.artists = artists;
-  }
-
-  public List<Genre> getGenres() {
-    return genres;
-  }
-
-  public void setGenres(List<Genre> genres) {
-    this.genres = genres;
-  }
-
-  public List<PlaylistTrack> getPlaylistTracks() {
-    return playlistTracks;
-  }
-
-  public void setPlaylistTracks(List<PlaylistTrack> playlistTracks) {
-    this.playlistTracks = playlistTracks;
-  }
-
-  public List<User> getFavoritedBy() {
-    return favoritedBy;
-  }
-
-  public void setFavoritedBy(List<User> favoritedBy) {
-    this.favoritedBy = favoritedBy;
+    return TrackDto.builder()
+      .id(track.getId())
+      .title(track.getTitle())
+      .albumId(track.getAlbum() != null ? track.getAlbum().getId() : null)
+      .albumTitle(track.getAlbum() != null ? track.getAlbum().getTitle() : null)
+      .durationSeconds(track.getDurationSeconds())
+      .fileUrl(track.getFileUrl())
+      .lyrics(track.getLyrics())
+      .releaseDate(track.getReleaseDate())
+      .artists(artistDtos)
+      .genres(genreDtos)
+      .build();
   }
 }

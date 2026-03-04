@@ -1,11 +1,11 @@
-INSERT INTO users (email, password_hash, full_name, is_active) VALUES 
-('alex.music@example.com', 'hash_alex123', 'Алексей Волков', true),
-('elena.fan@example.com', 'hash_elena456', 'Елена Смирнова', true),
-('dmitry.user@example.com', 'hash_dmitry789', 'Дмитрий Козлов', true),
-('anna.premium@example.com', 'hash_anna321', 'Анна Морозова', true),
-('sergey.listener@example.com', 'hash_sergey654', 'Сергей Павлов', true);
+INSERT INTO users (role, username, password, name) VALUES 
+('ROLE_ADMIN', 'admin',  '$2a$10$S6qhg/aJjuNsLic6PnoBE.tb6fMjsENm8gOqQ8taZ.pt4Eikf.HO6', 'Алексей'),
+('ROLE_USER',  'elena',  '$2a$10$S6qhg/aJjuNsLic6PnoBE.tb6fMjsENm8gOqQ8taZ.pt4Eikf.HO6', 'Елена'),
+('ROLE_USER',  'dmitry', '$2a$10$S6qhg/aJjuNsLic6PnoBE.tb6fMjsENm8gOqQ8taZ.pt4Eikf.HO6', 'Дмитрий'),
+('ROLE_USER',  'anna',   '$2a$10$S6qhg/aJjuNsLic6PnoBE.tb6fMjsENm8gOqQ8taZ.pt4Eikf.HO6', 'Анна'),
+('ROLE_USER',  'sergey', '$2a$10$S6qhg/aJjuNsLic6PnoBE.tb6fMjsENm8gOqQ8taZ.pt4Eikf.HO6', 'Сергей');
 
-INSERT INTO artists (full_name) VALUES 
+INSERT INTO artists (name) VALUES 
 ('Miyagi & Эндшпиль'),
 ('Баста'),
 ('Земфира'),
@@ -55,21 +55,18 @@ INSERT INTO tracks_genres (track_id, genre_id) VALUES
 (10, 2), (10, 4);
 
 INSERT INTO playlists (name, user_id, is_public, cover_image_url) VALUES 
-('Любимый русский рэп', 1, true, 'https://example.com/playlists/rusrap.jpg'),
 ('Рок на все времена', 2, true, 'https://example.com/playlists/rock.jpg'),
 ('Тренировка 2024', 3, false, 'https://example.com/playlists/sport.jpg'),
 ('Для души', 4, true, 'https://example.com/playlists/soul.jpg'),
 ('В машину', 5, true, 'https://example.com/playlists/car.jpg');
 
 INSERT INTO playlists_tracks (playlist_id, track_id, position) VALUES 
-(1, 1, 1), (1, 2, 2), (1, 6, 3), (1, 7, 4),
-(2, 3, 1), (2, 4, 2), (2, 8, 3), (2, 9, 4),
-(3, 2, 1), (3, 5, 2), (3, 10, 3), (3, 1, 4),
-(4, 3, 1), (4, 4, 2), (4, 7, 3), (4, 8, 4),
-(5, 1, 1), (5, 4, 2), (5, 5, 3), (5, 10, 4);
+(1, 3, 1), (1, 4, 2), (1, 8, 3), (1, 9, 4),
+(2, 2, 1), (2, 5, 2), (2, 10, 3), (2, 1, 4),
+(3, 3, 1), (3, 4, 2), (3, 7, 3), (3, 8, 4),
+(4, 1, 1), (4, 4, 2), (4, 5, 3), (4, 10, 4);
 
 INSERT INTO user_favorites (user_id, track_id) VALUES 
-(1, 1), (1, 2), (1, 6),
 (2, 3), (2, 4), (2, 9),
 (3, 5), (3, 10),
 (4, 1), (4, 3), (4, 8), (4, 9),

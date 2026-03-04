@@ -2,36 +2,52 @@ package com.music.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import com.music.dto.UserDto;
+import com.music.enumeration.Role;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 
 @Entity
+@Builder
 @Table(name = "users")
-public class User {
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class User implements UserDetails {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(unique = true, nullable = false, length = 100)
-  private String email;
+  @Column(unique = true, nullable = false, length = 30)
+  private String username;
 
-  @Column(name = "password_hash", nullable = false, length = 255)
-  private String passwordHash;
+  @Column(name = "password", nullable = false, length = 255)
+  private String password;
 
-  @Column(name = "full_name", nullable = false, length = 100)
-  private String fullName;
+  @Column(name = "name", nullable = false, length = 30)
+  private String name;
+
+  @Enumerated(EnumType.STRING)
+  @Column(name = "role", nullable = false)
+  private Role role;
 
   @Column(name = "created_at")
   private LocalDateTime createdAt;
 
   @Column(name = "updated_at")
   private LocalDateTime updatedAt;
-
-  @Column(name = "is_active")
-  private Boolean isActive;
 
   @PrePersist
   protected void onCreate() {
@@ -44,95 +60,45 @@ public class User {
     updatedAt = LocalDateTime.now();
   }
 
+  public User(String username, String password, String name, Role role) {
+    this.username = username;
+    this.password = password;
+    this.name = name;
+    this.role = role;
+  }
 
-  @ManyToMany
-  @JoinTable(
-    name = "user_favorites",
-    joinColumns = @JoinColumn(name = "user_id"),
-    inverseJoinColumns = @JoinColumn(name = "track_id")
-  )
-  private List<Track> favoriteTracks = new ArrayList<>();
-
-  public User() {}
-
-  public User(String email, String passwordHash, String fullName) {
-    this.email = email;
-    this.passwordHash = passwordHash;
-    this.fullName = fullName;
-    this.isActive = true;
+  @Override
+  public Collection<? extends GrantedAuthority> getAuthorities() {
+    return List.of(new SimpleGrantedAuthority(role.name()));
   }
 
   public static UserDto convertToDto(User user) {
     return new UserDto(
       user.getId(),
-      user.getEmail(),
-      user.getFullName(),
-      user.getCreatedAt(),
-      user.getIsActive()
+      user.getUsername(),
+      user.getName(),
+      user.getRole().name(),
+      user.getCreatedAt()
     );
   }
 
-  public Long getId() {
-    return id;
+  @Override
+  public boolean isAccountNonExpired() {
+    return true;
   }
 
-  public void setId(Long id) {
-    this.id = id;
+  @Override
+  public boolean isAccountNonLocked() {
+    return true;
   }
 
-  public String getEmail() {
-    return email;
+  @Override
+  public boolean isCredentialsNonExpired() {
+    return true;
   }
 
-  public void setEmail(String email) {
-    this.email = email;
-  }
-
-  public String getPasswordHash() {
-    return passwordHash;
-  }
-
-  public void setPasswordHash(String passwordHash) {
-    this.passwordHash = passwordHash;
-  }
-
-  public String getFullName() {
-    return fullName;
-  }
-
-  public void setFullName(String fullName) {
-    this.fullName = fullName;
-  }
-
-  public LocalDateTime getCreatedAt() {
-    return createdAt;
-  }
-
-  public void setCreatedAt(LocalDateTime createdAt) {
-    this.createdAt = createdAt;
-  }
-
-  public LocalDateTime getUpdatedAt() {
-    return updatedAt;
-  }
-
-  public void setUpdatedAt(LocalDateTime updatedAt) {
-    this.updatedAt = updatedAt;
-  }
-
-  public Boolean getIsActive() {
-    return isActive;
-  }
-
-  public void setIsActive(Boolean isActive) {
-    this.isActive = isActive;
-  }
-
-  public List<Track> getFavoriteTracks() {
-    return favoriteTracks;
-  }
-
-  public void setFavoriteTracks(List<Track> favoriteTracks) {
-    this.favoriteTracks = favoriteTracks;
+  @Override
+  public boolean isEnabled() {
+    return true;
   }
 }

@@ -1,15 +1,21 @@
 package com.music.controller;
 
+import com.music.dto.SuccessResponse;
+import com.music.dto.UpdateUserRequest;
 import com.music.dto.UserDto;
+import com.music.dto.auth.RegisterRequest;
 import com.music.service.UserService;
+
+import jakarta.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
-
 public class UserController {
 
   private UserService userService;
@@ -19,15 +25,41 @@ public class UserController {
   }
 
   @GetMapping
+  @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<List<UserDto>> getAllUsers() {
     List<UserDto> users = userService.getAllUsers();
     return new ResponseEntity<>(users, HttpStatus.OK);
   }
 
   @GetMapping("/{id}")
+  @PreAuthorize("hasRole('ADMIN') or authentication.principal.id == #id")
   public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
     return userService.getUserById(id)
       .map(user -> new ResponseEntity<>(user, HttpStatus.OK))
       .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+  }
+
+  @PostMapping
+  @PreAuthorize("hasRole('ADMIN')")
+  public ResponseEntity<UserDto> createUser(@Valid @RequestBody RegisterRequest request) {
+    UserDto createdUser = userService.create(request);
+    return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
+  }
+
+  @PutMapping("/{id}")
+  @PreAuthorize("hasRole('ADMIN') or authentication.principal.id == #id")
+  public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @Valid @RequestBody UpdateUserRequest request) {
+    UserDto updatedUser = userService.updateUser(id, request);
+    return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+  }
+
+  @DeleteMapping("/{id}")
+  @PreAuthorize("hasRole('ADMIN') or authentication.principal.id == #id")
+  public ResponseEntity<SuccessResponse> deleteUser(@PathVariable Long id) {
+    userService.deleteUser(id);
+    return new ResponseEntity<>(
+      new SuccessResponse("Пользователь успешно удален"),
+      HttpStatus.OK
+    );
   }
 }

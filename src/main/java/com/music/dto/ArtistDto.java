@@ -1,29 +1,18 @@
 package com.music.dto;
 
+import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class ArtistDto {
   private Long id;
-  private String fullName;
 
-  public ArtistDto() {}
-
-  public ArtistDto(Long id, String fullName) {
-    this.id = id;
-    this.fullName = fullName;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public String getFullName() {
-    return fullName;
-  }
-
-  public void setFullName(String fullName) {
-    this.fullName = fullName;
-  }
+  @NotBlank(message = "Имя исполнителя обязательно")
+  @Size(max = 100, message = "Имя исполнителя не должно превышать 100 символов")
+  private String name;
 }

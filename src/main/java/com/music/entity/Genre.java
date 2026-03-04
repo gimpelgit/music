@@ -5,9 +5,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.music.dto.GenreDto;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 @Entity
 @Table(name = "genres")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Genre {
 
   @Id
@@ -20,9 +28,6 @@ public class Genre {
   @ManyToMany(mappedBy = "genres")
   private List<Track> tracks = new ArrayList<>();
 
-  public Genre() {
-  }
-
   public Genre(String name) {
     this.name = name;
   }
@@ -32,29 +37,5 @@ public class Genre {
       genre.getId(),
       genre.getName()
     );
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public List<Track> getTracks() {
-    return tracks;
-  }
-
-  public void setTracks(List<Track> tracks) {
-    this.tracks = tracks;
   }
 }

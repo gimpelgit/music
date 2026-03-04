@@ -1,82 +1,36 @@
 package com.music.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class PlaylistDto {
   private Long id;
+
+  @NotBlank(message = "Название плейлиста обязательно")
+  @Size(max = 200, message = "Название плейлиста не должно превышать 200 символов")
   private String name;
+
+  @JsonProperty(access = JsonProperty.Access.READ_ONLY)
   private Long userId;
+
+  @JsonProperty(access = JsonProperty.Access.READ_ONLY)
   private String userName;
-  private Boolean isPublic;
+
+  private Boolean isPublic = false;
+
+  @Size(max = 255, message = "URL обложки не должен превышать 255 символов")
   private String coverImageUrl;
+
   private List<TrackDto> tracks;
-
-  public PlaylistDto() {}
-
-  public PlaylistDto(Long id, String name, Long userId, String userName,
-      Boolean isPublic, String coverImageUrl, List<TrackDto> tracks) {
-    this.id = id;
-    this.name = name;
-    this.userId = userId;
-    this.userName = userName;
-    this.isPublic = isPublic;
-    this.coverImageUrl = coverImageUrl;
-    this.tracks = tracks;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public Long getUserId() {
-    return userId;
-  }
-
-  public void setUserId(Long userId) {
-    this.userId = userId;
-  }
-
-  public String getUserName() {
-    return userName;
-  }
-
-  public void setUserName(String userName) {
-    this.userName = userName;
-  }
-
-  public Boolean getIsPublic() {
-    return isPublic;
-  }
-
-  public void setIsPublic(Boolean isPublic) {
-    this.isPublic = isPublic;
-  }
-
-  public String getCoverImageUrl() {
-    return coverImageUrl;
-  }
-
-  public void setCoverImageUrl(String coverImageUrl) {
-    this.coverImageUrl = coverImageUrl;
-  }
-
-  public List<TrackDto> getTracks() {
-    return tracks;
-  }
-
-  public void setTracks(List<TrackDto> tracks) {
-    this.tracks = tracks;
-  }
 }

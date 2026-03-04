@@ -5,9 +5,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.music.dto.AlbumDto;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 @Entity
 @Table(name = "albums")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Album {
 
   @Id
@@ -23,9 +31,6 @@ public class Album {
   @OneToMany(mappedBy = "album")
   private List<Track> tracks = new ArrayList<>();
 
-  public Album() {
-  }
-
   public Album(String title, String coverImageUrl) {
     this.title = title;
     this.coverImageUrl = coverImageUrl;
@@ -37,37 +42,5 @@ public class Album {
       album.getTitle(),
       album.getCoverImageUrl()
     );
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public String getTitle() {
-    return title;
-  }
-
-  public void setTitle(String title) {
-    this.title = title;
-  }
-
-  public String getCoverImageUrl() {
-    return coverImageUrl;
-  }
-
-  public void setCoverImageUrl(String coverImageUrl) {
-    this.coverImageUrl = coverImageUrl;
-  }
-
-  public List<Track> getTracks() {
-    return tracks;
-  }
-
-  public void setTracks(List<Track> tracks) {
-    this.tracks = tracks;
   }
 }

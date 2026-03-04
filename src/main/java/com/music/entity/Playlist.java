@@ -6,19 +6,18 @@ import java.util.List;
 import com.music.dto.PlaylistDto;
 import com.music.dto.TrackDto;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OrderBy;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 @Entity
 @Table(name = "playlists")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Playlist {
 
   @Id
@@ -42,8 +41,6 @@ public class Playlist {
   @OrderBy("position")
   private List<PlaylistTrack> playlistTracks = new ArrayList<>();
 
-  public Playlist() {}
-
   public Playlist(String name, User user, Boolean isPublic, String coverImageUrl) {
     this.name = name;
     this.user = user;
@@ -60,51 +57,11 @@ public class Playlist {
       playlist.getId(),
       playlist.getName(),
       playlist.getUser().getId(),
-      playlist.getUser().getFullName(),
+      playlist.getUser().getName(),
       playlist.getIsPublic(),
       playlist.getCoverImageUrl(),
       trackDtos
     );
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public User getUser() {
-    return user;
-  }
-
-  public void setUser(User user) {
-    this.user = user;
-  }
-
-  public Boolean getIsPublic() {
-    return isPublic;
-  }
-
-  public void setIsPublic(Boolean isPublic) {
-    this.isPublic = isPublic;
-  }
-
-  public String getCoverImageUrl() {
-    return coverImageUrl;
-  }
-
-  public void setCoverImageUrl(String coverImageUrl) {
-    this.coverImageUrl = coverImageUrl;
   }
 
   public List<Track> getTracks() {
