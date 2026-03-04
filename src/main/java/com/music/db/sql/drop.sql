@@ -1,4 +1,3 @@
-DROP TABLE IF EXISTS user_favorites;
 DROP TABLE IF EXISTS playlists_tracks;
 DROP TABLE IF EXISTS tracks_genres;
 DROP TABLE IF EXISTS tracks_artists;

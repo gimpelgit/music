@@ -65,9 +65,3 @@ INSERT INTO playlists_tracks (playlist_id, track_id, position) VALUES
 (2, 2, 1), (2, 5, 2), (2, 10, 3), (2, 1, 4),
 (3, 3, 1), (3, 4, 2), (3, 7, 3), (3, 8, 4),
 (4, 1, 1), (4, 4, 2), (4, 5, 3), (4, 10, 4);
-
-INSERT INTO user_favorites (user_id, track_id) VALUES 
-(2, 3), (2, 4), (2, 9),
-(3, 5), (3, 10),
-(4, 1), (4, 3), (4, 8), (4, 9),
-(5, 2), (5, 4), (5, 7);

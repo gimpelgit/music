@@ -68,15 +68,3 @@ CREATE TABLE IF NOT EXISTS playlists_tracks (
     position INTEGER NOT NULL,
     PRIMARY KEY (playlist_id, track_id)
 );
-
-
-CREATE TABLE IF NOT EXISTS user_favorites (
-    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
-    track_id INTEGER REFERENCES tracks(id) ON DELETE CASCADE,
-    PRIMARY KEY (user_id, track_id)
-);
-
-
-INSERT INTO roles (id, name) VALUES 
-(1, 'user'),
-(2, 'admin');
