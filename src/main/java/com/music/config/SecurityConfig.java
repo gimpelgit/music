@@ -48,7 +48,7 @@ public class SecurityConfig {
       .csrf(AbstractHttpConfigurer::disable)  //NOSONAR
       .cors(cors -> cors.configurationSource(request -> {
         var corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowedOriginPatterns(List.of("*"));
+        corsConfiguration.setAllowedOriginPatterns(List.of("http://localhost:4200"));
         corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         corsConfiguration.setAllowedHeaders(List.of("*"));
         corsConfiguration.setAllowCredentials(true);
