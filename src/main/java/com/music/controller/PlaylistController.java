@@ -1,6 +1,9 @@
 package com.music.controller;
 
-import com.music.dto.*;
+import com.music.dto.request.CreatePlaylistRequest;
+import com.music.dto.request.UpdatePlaylistRequest;
+import com.music.dto.response.PlaylistDto;
+import com.music.dto.response.SuccessResponse;
 import com.music.service.PlaylistService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;

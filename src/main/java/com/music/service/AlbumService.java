@@ -1,8 +1,8 @@
 package com.music.service;
 
-import com.music.dto.AlbumDto;
-import com.music.dto.CreateAlbumRequest;
-import com.music.dto.UpdateAlbumRequest;
+import com.music.dto.request.CreateAlbumRequest;
+import com.music.dto.request.UpdateAlbumRequest;
+import com.music.dto.response.AlbumDto;
 import com.music.entity.Album;
 import com.music.exception.AlbumNotFoundException;
 import com.music.repository.AlbumRepository;

@@ -4,7 +4,8 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.music.dto.AlbumDto;
+import com.music.dto.response.AlbumDto;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;

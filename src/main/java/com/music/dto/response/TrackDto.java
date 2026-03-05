@@ -1,4 +1,4 @@
-package com.music.dto;
+package com.music.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Min;

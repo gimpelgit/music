@@ -1,6 +1,9 @@
 package com.music.controller;
 
-import com.music.dto.*;
+import com.music.dto.request.CreateTrackRequest;
+import com.music.dto.request.UpdateTrackRequest;
+import com.music.dto.response.SuccessResponse;
+import com.music.dto.response.TrackDto;
 import com.music.service.TrackService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;

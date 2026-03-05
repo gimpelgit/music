@@ -1,9 +1,9 @@
 package com.music.controller;
 
-import com.music.dto.SuccessResponse;
-import com.music.dto.UpdateUserRequest;
-import com.music.dto.UserDto;
 import com.music.dto.auth.RegisterRequest;
+import com.music.dto.request.UpdateUserRequest;
+import com.music.dto.response.SuccessResponse;
+import com.music.dto.response.UserDto;
 import com.music.service.UserService;
 
 import jakarta.validation.Valid;
@@ -49,6 +49,9 @@ public class UserController {
   @PutMapping("/{id}")
   @PreAuthorize("hasRole('ADMIN') or authentication.principal.id == #id")
   public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @Valid @RequestBody UpdateUserRequest request) {
+    if (request.getRole() != null && !userService.isAdmin()) {
+      return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    }
     UserDto updatedUser = userService.updateUser(id, request);
     return new ResponseEntity<>(updatedUser, HttpStatus.OK);
   }

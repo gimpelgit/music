@@ -1,4 +1,4 @@
-package com.music.dto;
+package com.music.dto.response;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,8 +10,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class UserDto {
   private Long id;
-  private String email;
-  private String fullName;
+  private String username;
+  private String name;
   private String role;
   private LocalDateTime createdAt;
 }

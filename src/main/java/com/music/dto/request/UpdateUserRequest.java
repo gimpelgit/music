@@ -1,4 +1,4 @@
-package com.music.dto;
+package com.music.dto.request;
 
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -17,5 +17,7 @@ public class UpdateUserRequest {
   private String name;
 
   @Size(min = 6, message = "Длина пароля должна быть хотя бы 6 символов")
-  private String password; 
+  private String password;
+
+  private String role;
 }

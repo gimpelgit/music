@@ -10,9 +10,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.music.dto.ArtistDto;
-import com.music.dto.GenreDto;
-import com.music.dto.TrackDto;
+import com.music.dto.response.ArtistDto;
+import com.music.dto.response.GenreDto;
+import com.music.dto.response.TrackDto;
 
 @Entity
 @Table(name = "tracks")

@@ -1,7 +1,7 @@
 package com.music.controller;
 
-import com.music.dto.GenreDto;
-import com.music.dto.SuccessResponse;
+import com.music.dto.response.GenreDto;
+import com.music.dto.response.SuccessResponse;
 import com.music.service.GenreService;
 
 import jakarta.validation.Valid;

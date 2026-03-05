@@ -1,4 +1,4 @@
-package com.music.dto;
+package com.music.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -9,8 +9,7 @@ import lombok.AllArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AlbumDto {
-  private Long id;
+public class CreateAlbumRequest {
 
   @NotBlank(message = "Название альбома обязательно")
   @Size(max = 200, message = "Название альбома не должно превышать 200 символов")

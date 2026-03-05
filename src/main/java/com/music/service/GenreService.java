@@ -1,6 +1,6 @@
 package com.music.service;
 
-import com.music.dto.GenreDto;
+import com.music.dto.response.GenreDto;
 import com.music.entity.Genre;
 import com.music.exception.GenreAlreadyExistsException;
 import com.music.exception.GenreNotFoundException;

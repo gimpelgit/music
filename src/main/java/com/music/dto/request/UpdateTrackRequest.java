@@ -1,8 +1,6 @@
-package com.music.dto;
+package com.music.dto.request;
 
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,19 +12,16 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateTrackRequest {
+public class UpdateTrackRequest {
 
-  @NotBlank(message = "Название трека обязательно")
   @Size(max = 200, message = "Название трека не должно превышать 200 символов")
   private String title;
 
   private Long albumId;
 
-  @NotNull(message = "Длительность трека обязательна")
   @Min(value = 1, message = "Длительность трека должна быть положительным числом")
   private Integer durationSeconds;
 
-  @NotBlank(message = "URL файла трека обязателен")
   @Size(max = 255, message = "URL файла не должен превышать 255 символов")
   private String fileUrl;
 
@@ -35,11 +30,7 @@ public class CreateTrackRequest {
 
   private LocalDate releaseDate;
 
-  @NotNull(message = "Список исполнителей обязателен")
-  @Size(min = 1, message = "Должен быть хотя бы один исполнитель")
   private List<Long> artistIds;
 
-  @NotNull(message = "Список жанров обязателен")
-  @Size(min = 1, message = "Должен быть хотя бы один жанр")
   private List<Long> genreIds;
 }

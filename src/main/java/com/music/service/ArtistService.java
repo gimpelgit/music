@@ -1,6 +1,6 @@
 package com.music.service;
 
-import com.music.dto.ArtistDto;
+import com.music.dto.response.ArtistDto;
 import com.music.entity.Artist;
 import com.music.exception.ArtistAlreadyExistsException;
 import com.music.exception.ArtistNotFoundException;

@@ -3,8 +3,8 @@ package com.music.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.music.dto.PlaylistDto;
-import com.music.dto.TrackDto;
+import com.music.dto.response.PlaylistDto;
+import com.music.dto.response.TrackDto;
 
 import jakarta.persistence.*;
 import lombok.Getter;

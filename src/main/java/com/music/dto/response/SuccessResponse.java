@@ -1,4 +1,4 @@
-package com.music.dto;
+package com.music.dto.response;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

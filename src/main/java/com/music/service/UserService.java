@@ -1,14 +1,16 @@
 package com.music.service;
 
-import com.music.dto.UpdateUserRequest;
-import com.music.dto.UserDto;
 import com.music.dto.auth.RegisterRequest;
+import com.music.dto.request.UpdateUserRequest;
+import com.music.dto.response.UserDto;
 import com.music.entity.User;
 import com.music.enumeration.Role;
+import com.music.exception.RoleNotFoundException;
 import com.music.exception.UserAlreadyExistsException;
 import com.music.exception.UserNotFoundException;
 import com.music.repository.UserRepository;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -81,6 +83,14 @@ public class UserService {
 
       user.setUsername(request.getUsername());
     }
+
+    if (request.getRole() != null && isAdmin()) {
+      if (!Role.isValid(request.getRole())) {
+        throw new RoleNotFoundException(request.getRole());
+      }
+  
+      user.setRole(Role.valueOf(request.getRole()));
+    }
     
     if (request.getName() != null && !request.getName().isEmpty()) {
       user.setName(request.getName());
@@ -112,8 +122,16 @@ public class UserService {
   }
 
   public User getCurrentUser() {
-    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    if (authentication == null) {
+      return null;
+    }
+    String username = authentication.getName();
     return getByUsername(username);
   }
 
+  public boolean isAdmin() {
+    User user = getCurrentUser();
+    return user != null && user.getRole() == Role.ROLE_ADMIN;
+  }
 }

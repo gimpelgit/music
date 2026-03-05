@@ -1,8 +1,8 @@
 package com.music.service;
 
-import com.music.dto.CreateTrackRequest;
-import com.music.dto.TrackDto;
-import com.music.dto.UpdateTrackRequest;
+import com.music.dto.request.CreateTrackRequest;
+import com.music.dto.request.UpdateTrackRequest;
+import com.music.dto.response.TrackDto;
 import com.music.entity.*;
 import com.music.exception.*;
 import com.music.repository.*;

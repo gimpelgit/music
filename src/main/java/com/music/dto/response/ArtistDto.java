@@ -1,4 +1,4 @@
-package com.music.dto;
+package com.music.dto.response;
 
 import jakarta.validation.constraints.Size;
 import jakarta.validation.constraints.NotBlank;

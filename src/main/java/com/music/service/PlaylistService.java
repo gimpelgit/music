@@ -1,8 +1,8 @@
 package com.music.service;
 
-import com.music.dto.CreatePlaylistRequest;
-import com.music.dto.PlaylistDto;
-import com.music.dto.UpdatePlaylistRequest;
+import com.music.dto.request.CreatePlaylistRequest;
+import com.music.dto.request.UpdatePlaylistRequest;
+import com.music.dto.response.PlaylistDto;
 import com.music.entity.Playlist;
 import com.music.entity.PlaylistTrack;
 import com.music.entity.Track;

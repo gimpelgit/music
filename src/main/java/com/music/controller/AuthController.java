@@ -1,9 +1,9 @@
 package com.music.controller;
 
-import com.music.dto.SuccessResponse;
 import com.music.dto.auth.JwtAuthenticationResponse;
 import com.music.dto.auth.LoginRequest;
 import com.music.dto.auth.RegisterRequest;
+import com.music.dto.response.SuccessResponse;
 import com.music.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
