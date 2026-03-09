@@ -1,13 +1,14 @@
-import { Component } from "@angular/core";
-import { FormsModule } from "@angular/forms";
+import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: "my-app",
-  imports: [FormsModule],
-  template: `<label>Введите имя:</label>
-             <input [(ngModel)]="name" placeholder="name">
-             <h1>Добро пожаловать {{name}}!</h1>`
+  selector: 'app-root',
+  standalone: true,
+  imports: [CommonModule, RouterOutlet],
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  name = "";
+  title = 'Музыка';
 }
