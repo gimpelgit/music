@@ -15,6 +15,10 @@ export class AlbumService {
     return this.http.get<Album[]>(this.apiUrl);
   }
 
+  getById(id: number): Observable<Album> {
+    return this.http.get<Album>(`${this.apiUrl}/${id}`);
+  }
+
   filterAlbums(filter: AlbumFilterRequest): Observable<PageResponse<Album>> {
     return this.http.post<PageResponse<Album>>(`${this.apiUrl}/filter`, filter);
   }

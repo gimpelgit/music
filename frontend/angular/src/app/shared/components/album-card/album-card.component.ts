@@ -1,11 +1,12 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { Album } from '../../../core/models/album.model';
 
 @Component({
   selector: 'app-album-card',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './album-card.component.html',
   styleUrls: ['./album-card.component.scss']
 })
