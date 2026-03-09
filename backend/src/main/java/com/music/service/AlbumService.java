@@ -1,11 +1,17 @@
 package com.music.service;
 
+import com.music.dto.request.AlbumFilterRequest;
 import com.music.dto.request.CreateAlbumRequest;
 import com.music.dto.request.UpdateAlbumRequest;
 import com.music.dto.response.AlbumDto;
+import com.music.dto.response.PageResponse;
 import com.music.entity.Album;
 import com.music.exception.AlbumNotFoundException;
 import com.music.repository.AlbumRepository;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -66,5 +72,40 @@ public class AlbumService {
       throw new AlbumNotFoundException(id);
     }
     albumRepository.deleteById(id);
+  }
+
+  public PageResponse<AlbumDto> findAlbumsByFilters(AlbumFilterRequest filterRequest) {
+    int zeroBasedPage = filterRequest.getPage() - 1;
+    Pageable pageable = PageRequest.of(zeroBasedPage, filterRequest.getSize());
+    
+    List<Long> genreIds = filterRequest.getGenreIds();
+    List<Long> artistIds = filterRequest.getArtistIds();
+    
+    if (genreIds != null && genreIds.isEmpty()) {
+      genreIds = null;
+    }
+    if (artistIds != null && artistIds.isEmpty()) {
+      artistIds = null;
+    }
+
+    Long genreCount = genreIds != null ? (long) genreIds.size() : null;
+    Long artistCount = artistIds != null ? (long) artistIds.size() : null;
+
+    Page<Album> albumPage = albumRepository.findAlbumsByGenresAndArtists(
+      genreIds, artistIds, genreCount, artistCount, pageable);
+    
+    List<AlbumDto> content = albumPage.getContent().stream()
+      .map(Album::convertToDto)
+      .toList();
+    
+    return PageResponse.<AlbumDto>builder()
+      .content(content)
+      .page(filterRequest.getPage())
+      .size(albumPage.getSize())
+      .totalElements(albumPage.getTotalElements())
+      .totalPages(albumPage.getTotalPages())
+      .first(albumPage.isFirst())
+      .last(albumPage.isLast())
+      .build();
   }
 }

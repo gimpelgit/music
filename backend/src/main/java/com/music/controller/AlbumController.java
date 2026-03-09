@@ -1,8 +1,10 @@
 package com.music.controller;
 
+import com.music.dto.request.AlbumFilterRequest;
 import com.music.dto.request.CreateAlbumRequest;
 import com.music.dto.request.UpdateAlbumRequest;
 import com.music.dto.response.AlbumDto;
+import com.music.dto.response.PageResponse;
 import com.music.dto.response.SuccessResponse;
 import com.music.service.AlbumService;
 import jakarta.validation.Valid;
@@ -35,6 +37,14 @@ public class AlbumController {
         .map(album -> new ResponseEntity<>(album, HttpStatus.OK))
         .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
   }
+
+  @PostMapping("/filter")
+  public ResponseEntity<PageResponse<AlbumDto>> getAlbumsByFilters(
+      @Valid @RequestBody AlbumFilterRequest filterRequest) {
+    PageResponse<AlbumDto> albums = albumService.findAlbumsByFilters(filterRequest);
+    return new ResponseEntity<>(albums, HttpStatus.OK);
+  }
+
 
   @PostMapping
   @PreAuthorize("hasRole('ADMIN')")

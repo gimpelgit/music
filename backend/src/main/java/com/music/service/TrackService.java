@@ -43,6 +43,13 @@ public class TrackService {
       .map(Track::convertToDto);
   }
 
+  public List<TrackDto> getTracksByAlbumId(Long albumId) {
+    return trackRepository.findByAlbumId(albumId)
+      .stream()
+      .map(Track::convertToDto)
+      .toList();
+  }
+
   @Transactional
   public TrackDto createTrack(CreateTrackRequest request) {
     Track track = new Track();

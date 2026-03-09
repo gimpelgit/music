@@ -55,13 +55,15 @@ public class SecurityConfig {
         return corsConfiguration;
       }))
       .authorizeHttpRequests(auth -> auth
+        .requestMatchers("/uploads/**").permitAll()
         .requestMatchers("/api/auth/**").permitAll()
         .requestMatchers(HttpMethod.GET, "/api/genres/**").permitAll()
         .requestMatchers(HttpMethod.GET, "/api/artists/**").permitAll()
         .requestMatchers(HttpMethod.GET, "/api/tracks/**").permitAll()
         .requestMatchers(HttpMethod.GET, "/api/albums/**").permitAll()
+        .requestMatchers(HttpMethod.POST, "/api/albums/filter").permitAll()
         .requestMatchers(HttpMethod.GET, "/api/playlists/public/**").permitAll()
-    
+        
         .anyRequest().authenticated()
       )
       .authenticationProvider(authenticationProvider())

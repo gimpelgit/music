@@ -5,3 +5,8 @@ target/
 
 node_modules/
 **/node_modules/
+
+docs.md
+help.md
+code.md
+script.py

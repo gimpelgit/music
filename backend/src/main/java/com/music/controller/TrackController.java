@@ -35,6 +35,12 @@ public class TrackController {
       .map(track -> new ResponseEntity<>(track, HttpStatus.OK))
       .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
   }
+  
+  @GetMapping("/album/{albumId}")
+  public ResponseEntity<List<TrackDto>> getTracksByAlbumId(@PathVariable Long albumId) {
+    List<TrackDto> tracks = trackService.getTracksByAlbumId(albumId);
+    return new ResponseEntity<>(tracks, HttpStatus.OK);
+  }
 
   @PostMapping
   @PreAuthorize("hasRole('ADMIN')")

@@ -35,14 +35,6 @@ public class TrackDto {
 
   private LocalDate releaseDate;
 
-  @NotNull(message = "Список исполнителей обязателен")
-  @Size(min = 1, message = "Должен быть хотя бы один исполнитель")
-  private List<Long> artistIds;
-
-  @NotNull(message = "Список жанров обязателен")
-  @Size(min = 1, message = "Должен быть хотя бы один жанр")
-  private List<Long> genreIds;
-
   @JsonProperty(access = JsonProperty.Access.READ_ONLY)
   private List<ArtistDto> artists;
 

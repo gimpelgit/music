@@ -3,6 +3,9 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 secrets.properties
+sql-push
+start-db
+
 
 ### STS ###
 .apt_generated
