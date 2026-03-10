@@ -1,0 +1,79 @@
+@if (playerService.currentTrack(); as track) {
+  <div class="player-container">
+    <div class="player-content">
+      <div class="track-info">
+        <div class="track-details">
+          <div class="track-title">{{ track.title }}</div>
+          <div class="track-artist">{{ formatArtists(track.artists) }}</div>
+        </div>
+      </div>
+
+      <div class="player-controls">
+        <div class="control-buttons">
+          <button 
+            class="btn btn-link text-white p-2" 
+            [class.disabled]="!playerService.hasNext()"
+            (click)="playPrevious()"
+            [disabled]="!playerService.hasPrevious()">
+            <i class="bi bi-skip-backward-fill fs-5"></i>
+          </button>
+
+          <button 
+            class="btn btn-light rounded-circle p-0 play-button" 
+            (click)="togglePlay()">
+            <i class="bi" 
+               [class.bi-play-fill]="!playerService.isPlaying()" 
+               [class.bi-pause-fill]="playerService.isPlaying()">
+            </i>
+          </button>
+
+          <button 
+            class="btn btn-link text-white p-2" 
+            [class.disabled]="!playerService.hasNext()"
+            (click)="playNext()"
+            [disabled]="!playerService.hasNext()">
+            <i class="bi bi-skip-forward-fill fs-5"></i>
+          </button>
+        </div>
+
+        <div class="progress-container">
+          <span class="time-current">{{ formatTime(playerService.currentTime()) }}</span>
+          <div class="progress-bar-wrapper" (click)="onProgressClick($event)">
+            <div class="progress">
+              <div 
+                class="progress-bar bg-light" 
+                [style.width.%]="playerService.currentProgress()">
+              </div>
+            </div>
+          </div>
+          <span class="time-total">{{ formatTime(playerService.duration()) }}</span>
+        </div>
+      </div>
+
+      <div class="volume-control"
+           (mouseenter)="showVolumeSlider()"
+           (mouseleave)="hideVolumeSlider()">
+        <button class="btn btn-link text-white p-2" (click)="toggleMute()">
+          <i class="bi" 
+             [class.bi-volume-up-fill]="!playerService.isMuted() && playerService.volume() > 0.5"
+             [class.bi-volume-down-fill]="!playerService.isMuted() && playerService.volume() <= 0.5 && playerService.volume() > 0"
+             [class.bi-volume-mute-fill]="playerService.isMuted() || playerService.volume() === 0">
+          </i>
+        </button>
+        
+        @if (isVolumeSliderVisible) {
+          <div class="volume-slider-container">
+            <input 
+              type="range" 
+              class="form-range volume-slider" 
+              [value]="playerService.volume()"
+              min="0" 
+              max="1" 
+              step="0.01"
+              (input)="onVolumeChange($event)">
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+}

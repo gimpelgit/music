@@ -4,6 +4,7 @@ import { RouterLink, ActivatedRoute } from '@angular/router';
 import { Subject, takeUntil, switchMap } from 'rxjs';
 import { AlbumService } from '../../core/services/album.service';
 import { TrackService } from '../../core/services/track.service';
+import { PlayerService } from '../../core/services/player.service';
 import { Album } from '../../core/models/album.model';
 import { Track } from '../../core/models/track.model';
 
@@ -22,7 +23,8 @@ export class AlbumDetailComponent implements OnInit, OnDestroy {
   constructor(
     private readonly route: ActivatedRoute,
     private readonly albumService: AlbumService,
-    private readonly trackService: TrackService
+    private readonly trackService: TrackService,
+    private readonly playerService: PlayerService
   ) {}
 
   ngOnInit(): void {
@@ -80,7 +82,6 @@ export class AlbumDetailComponent implements OnInit, OnDestroy {
   }
 
   playTrack(track: Track): void {
-    // Здесь будет логика воспроизведения трека
-    console.log('Playing track:', track.title);
+    this.playerService.playTrack(track, this.tracks());
   }
 }

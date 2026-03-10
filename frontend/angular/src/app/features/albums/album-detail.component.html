@@ -71,10 +71,14 @@
               </div>
               
               <div class="col-auto">
-                <button class="btn btn-sm btn-outline-primary rounded-circle" 
-                        style="width: 40px; height: 40px;"
-                        (click)="playTrack(track)">
-                  <i class="bi bi-play-fill"></i>
+                <button 
+                  class="btn btn-sm btn-outline-primary rounded-circle" 
+                  style="width: 40px; height: 40px;"
+                  (click)="playTrack(track)">
+                  <i class="bi" 
+                    [class.bi-play-fill]="playerService.currentTrack()?.id !== track.id || !playerService.isPlaying()"
+                    [class.bi-pause-fill]="playerService.currentTrack()?.id === track.id && playerService.isPlaying()">
+                  </i>
                 </button>
               </div>
             </div>

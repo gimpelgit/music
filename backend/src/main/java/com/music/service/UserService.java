@@ -1,6 +1,7 @@
 package com.music.service;
 
 import com.music.dto.auth.RegisterRequest;
+import com.music.dto.request.AdminCreateUserRequest;
 import com.music.dto.request.UpdateUserRequest;
 import com.music.dto.response.UserDto;
 import com.music.entity.User;
@@ -69,6 +70,23 @@ public class UserService {
     
     return User.convertToDto(create(user));
   }
+
+  @Transactional
+  public UserDto createByAdmin(AdminCreateUserRequest request) {
+    if (!Role.isValid(request.getRole())) {
+      throw new RoleNotFoundException(request.getRole());
+    }
+    
+    User user = User.builder()
+      .username(request.getUsername())
+      .password(passwordEncoder.encode(request.getPassword()))
+      .name(request.getName())
+      .role(Role.valueOf(request.getRole()))
+      .build();
+    
+    return User.convertToDto(create(user));
+  }
+
 
   @Transactional
   public UserDto updateUser(Long id, UpdateUserRequest request) {

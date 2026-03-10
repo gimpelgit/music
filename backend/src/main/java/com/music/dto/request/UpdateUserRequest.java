@@ -10,7 +10,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class UpdateUserRequest {
 
-  @Size(max = 30, message = "Длина username не может быть больше 30 символов")
+  @Size(max = 30, message = "Длина логина не может быть больше 30 символов")
   private String username;
 
   @Size(max = 30, message = "Длина имени не может быть больше 30 символов")

@@ -1,9 +1,68 @@
 <nav class="navbar navbar-expand navbar-dark bg-primary">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">{{ title }}</a>
+    <a class="navbar-brand" routerLink="/" href="/">{{ title }}</a>
+    
+    <div class="navbar-nav ms-auto">
+      @if (authService.isAuthenticated()) {
+        @if (authService.isAdmin()) {
+          <a class="nav-link" routerLink="/admin" href="/admin">
+            <i class="bi bi-shield-lock me-1"></i>
+            Админка
+          </a>
+        }
+        <a class="nav-link" routerLink="/profile" href="/profile">
+          <i class="bi bi-person-circle me-1"></i>
+          {{ authService.user()?.name }}
+        </a>
+        <button class="nav-link btn btn-link" (click)="onLogout()">
+          <i class="bi bi-box-arrow-right me-1"></i>
+          Выйти
+        </button>
+      } @else {
+        <a class="nav-link" routerLink="/login" href="/login">
+          <i class="bi bi-box-arrow-in-right me-1"></i>
+          Войти
+        </a>
+        <a class="nav-link" routerLink="/register" href="/register">
+          <i class="bi bi-person-plus me-1"></i>
+          Регистрация
+        </a>
+      }
+    </div>
   </div>
 </nav>
+
+<div class="notification-container position-fixed top-0 end-0 p-3" style="z-index: 1100;">
+  @for (notification of notificationService.notifications$(); track notification.id) {
+    <div class="toast show mb-2" role="alert">
+      <div class="toast-header" 
+           [class.bg-success]="notification.type === 'success'"
+           [class.bg-danger]="notification.type === 'error'"
+           [class.bg-warning]="notification.type === 'warning'"
+           [class.bg-info]="notification.type === 'info'"
+           [class.text-white]="notification.type !== 'warning'">
+        <strong class="me-auto">
+          @switch (notification.type) {
+            @case ('success') { Успех }
+            @case ('error') { Ошибка }
+            @case ('warning') { Предупреждение }
+            @case ('info') { Информация }
+          }
+        </strong>
+        <button type="button" class="btn-close" 
+                [class.btn-close-white]="notification.type !== 'warning'"
+                (click)="notificationService.remove(notification.id)">
+        </button>
+      </div>
+      <div class="toast-body">
+        {{ notification.message }}
+      </div>
+    </div>
+  }
+</div>
 
 <main>
   <router-outlet></router-outlet>
 </main>
+
+<app-player></app-player>

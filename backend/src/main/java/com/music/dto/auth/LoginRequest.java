@@ -11,8 +11,8 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class LoginRequest {
 
-  @NotBlank(message = "Username не может быть пустым")
-  @Size(max = 30, message="Длина username не может быть больше 30 символов")
+  @NotBlank(message = "Логин не может быть пустым")
+  @Size(max = 30, message="Длина логина не может быть больше 30 символов")
   private String username;
 
   @NotBlank(message = "Пароль не может быть пустым")
