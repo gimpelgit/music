@@ -31,6 +31,12 @@ public class FileStorageService {
   @Value("${upload.tracks.url}")
   private String tracksUploadUrl;
 
+  @Value("${upload.playlists.path}")
+  private String playlistsUploadPath;
+
+  @Value("${upload.playlists.url}")
+  private String playlistsUploadUrl;
+
   private static final List<String> ALLOWED_AUDIO_TYPES = Arrays.asList(
     "audio/mpeg", "audio/mp3", "audio/wav", "audio/ogg", "audio/aac"
   );
@@ -38,6 +44,14 @@ public class FileStorageService {
   private static final long MAX_AUDIO_SIZE = 50 * 1024 * 1024l;
 
   public String saveAlbumImage(MultipartFile file) {
+    return saveImage(file, albumsUploadPath, albumsUploadUrl);
+  }
+
+  public String savePlaylistImage(MultipartFile file) {
+    return saveImage(file, playlistsUploadPath, playlistsUploadUrl);
+  }
+
+  private String saveImage(MultipartFile file, String uploadPath, String uploadUrl) {
     if (file == null || file.isEmpty()) {
       return null;
     }
@@ -45,7 +59,7 @@ public class FileStorageService {
     validateImage(file);
 
     try {
-      Path uploadDir = Paths.get(albumsUploadPath);
+      Path uploadDir = Paths.get(uploadPath);
       if (!Files.exists(uploadDir)) {
         Files.createDirectories(uploadDir);
       }
@@ -54,7 +68,7 @@ public class FileStorageService {
       Path filePath = uploadDir.resolve(filename);
       Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
-      return albumsUploadUrl + filename;
+      return uploadUrl + filename;
 
     } catch (IOException e) {
       throw new FileUploadException("Не удалось сохранить файл");
@@ -89,6 +103,10 @@ public class FileStorageService {
     deleteFile(imageUrl, albumsUploadPath);
   }
 
+  public void deletePlaylistImage(String imageUrl) {
+    deleteFile(imageUrl, playlistsUploadPath);
+  }
+
   public void deleteTrackAudio(String audioUrl) {
     deleteFile(audioUrl, tracksUploadPath);
   }
@@ -101,9 +119,7 @@ public class FileStorageService {
     try {
       String filename = fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
       Path filePath = Paths.get(uploadPath).resolve(filename);
-
       Files.deleteIfExists(filePath);
-
     } catch (IOException e) {
       throw new FileUploadException("Не удалось удалить файл");
     }

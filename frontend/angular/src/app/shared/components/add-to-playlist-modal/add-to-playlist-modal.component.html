@@ -1,0 +1,91 @@
+<div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Добавить в плейлист</h5>
+        <button type="button" class="btn-close" (click)="closeModal.emit()"></button> <!-- Изменено -->
+      </div>
+      
+      <div class="modal-body">
+        <div class="mb-3">
+          <div class="d-flex gap-2 align-items-center mb-3">
+            <img 
+              [src]="'http://localhost:8080/uploads/albums/default.jpeg'"
+              alt="Обложка плейлиста" 
+              class="rounded"
+              style="width: 40px; height: 40px; object-fit: cover;">
+            <div>
+              <div class="fw-semibold">{{ track.title }}</div>
+              <div class="small text-muted">{{ track.artists.map(a => a.name).join(', ') }}</div>
+            </div>
+          </div>
+        </div>
+
+        @if (!showNewPlaylistForm) {
+          <button 
+            class="btn btn-outline-primary w-100 mb-3" 
+            (click)="showNewPlaylistForm = true">
+            <i class="bi bi-plus-lg me-2"></i>
+            Новый плейлист
+          </button>
+        }
+
+        @if (showNewPlaylistForm) {
+          <div class="mb-3 p-3 bg-light rounded">
+            <div class="mb-2">
+              <label for="newPlaylistName" class="form-label fw-semibold">Название плейлиста</label>
+              <input
+                id="newPlaylistName" 
+                type="text" 
+                class="form-control" 
+                [(ngModel)]="newPlaylistName"
+                placeholder="Введите название">
+            </div>
+            <div class="d-flex gap-2">
+              <button class="btn btn-primary flex-grow-1" (click)="onCreatePlaylist()">
+                Создать и добавить
+              </button>
+              <button class="btn btn-outline-secondary" (click)="showNewPlaylistForm = false">
+                Отмена
+              </button>
+            </div>
+          </div>
+        }
+
+        <div class="playlists-list" style="max-height: 300px; overflow-y: auto;">
+          @for (playlist of playlistService.userPlaylists$(); track playlist.id) {
+            <div class="d-flex align-items-center justify-content-between p-2 border-bottom">
+              <div class="d-flex align-items-center gap-2">
+                <img 
+                  [src]="'http://localhost:8080/uploads/albums/default.jpeg'"
+                  alt="Обложка плейлиста"
+                  class="rounded"
+                  style="width: 40px; height: 40px; object-fit: cover;">
+                <div>
+                  <div class="fw-semibold">{{ playlist.name }}</div>
+                  <div class="small text-muted">{{ playlist.tracks.length }} треков</div>
+                </div>
+              </div>
+              
+              @if (trackInPlaylist(playlist)) {
+                <span class="badge bg-success">Добавлен</span>
+              } @else {
+                <button class="btn btn-sm btn-primary" (click)="onAddToPlaylist(playlist.id)">
+                  Добавить
+                </button>
+              }
+            </div>
+          } @empty {
+            <div class="text-center py-4">
+              <p class="text-muted mb-0">У вас нет плейлистов</p>
+            </div>
+          }
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeModal.emit()">Закрыть</button> <!-- Изменено -->
+      </div>
+    </div>
+  </div>
+</div>

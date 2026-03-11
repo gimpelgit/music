@@ -6,6 +6,10 @@ import { AlbumDetailComponent } from './features/albums/album-detail.component';
 import { LoginComponent } from './features/auth/login.component';
 import { RegisterComponent } from './features/auth/register.component';
 import { ProfileComponent } from './features/profile/profile.component';
+import { PlaylistsPageComponent } from './features/playlists/playlists-page.component';
+import { PlaylistDetailComponent } from './features/playlists/playlist-detail.component';
+import { PlaylistFormComponent } from './features/playlists/playlist-form.component';
+import { PublicPlaylistsComponent } from './features/playlists/public-playlists.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/albums', pathMatch: 'full' },
@@ -35,6 +39,32 @@ export const routes: Routes = [
   { 
     path: 'profile', 
     component: ProfileComponent,
+    canActivate: [AuthGuard]
+  },
+
+  {
+    path: 'playlists',
+    component: PlaylistsPageComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'playlists/public',
+    component: PublicPlaylistsComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'playlists/new',
+    component: PlaylistFormComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'playlists/:id',
+    component: PlaylistDetailComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'playlists/:id/edit',
+    component: PlaylistFormComponent,
     canActivate: [AuthGuard]
   },
   

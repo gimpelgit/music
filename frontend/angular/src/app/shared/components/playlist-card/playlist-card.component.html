@@ -1,0 +1,13 @@
+<a [routerLink]="['/playlists', playlist.id]" class="text-decoration-none">
+  <div class="card h-100 shadow-sm">
+    <img 
+      [src]="getPlaylistCoverUrl(playlist)" 
+      [alt]="playlist.name"
+      class="card-img-top"
+      style="aspect-ratio: 1/1; object-fit: cover;">
+    <div class="card-body">
+      <h5 class="card-title text-truncate text-dark">{{ playlist.name }}</h5>
+      <p class="card-text small text-muted">{{ playlist.tracks.length }} треков</p>
+    </div>
+  </div>
+</a>

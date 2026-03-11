@@ -1,0 +1,173 @@
+<div class="container py-4">
+  @if (loading()) {
+    <div class="text-center py-5">
+      <div class="spinner-border text-primary">
+        <span class="visually-hidden">Загрузка...</span>
+      </div>
+    </div>
+  } @else {
+    @if (playlist(); as playlist) {
+      <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a routerLink="/playlists/public" class="text-decoration-none">Мои плейлисты</a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">{{ playlist.name }}</li>
+        </ol>
+      </nav>
+
+      <div class="row g-4 mb-5">
+        <div class="col-md-3">
+          <div class="card shadow-sm">
+            <img 
+              [src]="getPlaylistCoverUrl(playlist)" 
+              [alt]="playlist.name"
+              class="card-img-top"
+              style="aspect-ratio: 1/1; object-fit: cover;">
+          </div>
+        </div>
+        
+        <div class="col-md-9">
+          <div class="h-100 d-flex flex-column justify-content-end">
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <h1 class="display-5 fw-bold mb-0">{{ playlist.name }}</h1>
+              <span class="badge fs-6" [class.bg-success]="playlist.isPublic" [class.bg-secondary]="!playlist.isPublic">
+                {{ playlist.isPublic ? 'Публичный' : 'Приватный' }}
+              </span>
+            </div>
+            
+            <div class="d-flex align-items-center gap-3 mb-3">
+              <span class="text-muted">
+                <i class="bi bi-person-circle me-1"></i>
+                {{ playlist.userName }}
+              </span>
+              <span class="text-muted">
+                <i class="bi bi-music-note-beamed me-1"></i>
+                {{ playlist.tracks.length }} треков
+              </span>
+            </div>
+            
+            <div class="d-flex gap-3">
+              <button class="btn btn-primary btn-lg" (click)="playAll()">
+                <i class="bi bi-play-fill me-2"></i>
+                Слушать все
+              </button>
+              
+              @if (isOwner()) {
+                <a [routerLink]="['/playlists', playlist.id, 'edit']" class="btn btn-outline-primary btn-lg">
+                  <i class="bi bi-pencil me-2"></i>
+                  Редактировать
+                </a>
+                
+                <button class="btn btn-outline-danger btn-lg" (click)="deletePlaylist()">
+                  <i class="bi bi-trash me-2"></i>
+                  Удалить
+                </button>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card shadow-sm">
+        <div class="card-header bg-white py-3">
+          <h2 class="h5 mb-0">Треки плейлиста</h2>
+        </div>
+        
+        <div class="list-group list-group-flush">
+          @for (track of playlist.tracks; track track.id; let i = $index) {
+            <div class="list-group-item p-3">
+              <div class="row align-items-center g-3">
+                <div class="col-auto">
+                  <span class="text-secondary fw-medium" style="width: 30px; display: inline-block;">{{ i + 1 }}</span>
+                </div>
+                
+                <div class="col">
+                  <div class="d-flex flex-column">
+                    <h3 class="h6 mb-1">{{ track.title }}</h3>
+                    <div class="d-flex flex-wrap gap-2 small text-secondary">
+                      <span>{{ formatArtists(track.artists) }}</span>
+                      
+                      @if (track.genres.length > 0) {
+                        <span class="text-secondary">·</span>
+                        <span>{{ track.genres.map(g => g.name).join(' · ') }}</span>
+                      }
+                      
+                      @if (track.durationSeconds) {
+                        <span class="text-secondary">·</span>
+                        <span>{{ formatDuration(track.durationSeconds) }}</span>
+                      }
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="col-auto">
+                  <div class="d-flex gap-2">
+                    <button 
+                      class="btn btn-sm btn-outline-primary rounded-circle" 
+                      style="width: 40px; height: 40px;"
+                      (click)="playTrack(track, playlist.tracks)">
+                      <i class="bi" 
+                        [class.bi-play-fill]="playerService.currentTrack()?.id !== track.id || !playerService.isPlaying()"
+                        [class.bi-pause-fill]="playerService.currentTrack()?.id === track.id && playerService.isPlaying()">
+                      </i>
+                    </button>
+                    
+                    @if (isOwner()) {
+                      @if (playlist.tracks.length > 1) {
+                        <button 
+                          class="btn btn-sm btn-outline-secondary rounded-circle" 
+                          style="width: 40px; height: 40px;"
+                          (click)="openPositionModal(track)">
+                          <i class="bi bi-arrows-move"></i>
+                        </button>
+                      }
+                      
+                      @if (showDeleteConfirm() === track.id) {
+                        <span class="me-2 text-muted">Удалить?</span>
+                        <button class="btn btn-sm btn-outline-success me-1" (click)="removeTrack(track.id)">
+                          <i class="bi bi-check-lg"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-secondary" (click)="cancelDelete()">
+                          <i class="bi bi-x-lg"></i>
+                        </button>
+                      } @else {
+                        <button 
+                          class="btn btn-sm btn-outline-danger rounded-circle" 
+                          style="width: 40px; height: 40px;"
+                          (click)="confirmDelete(track.id)">
+                          <i class="bi bi-trash"></i>
+                        </button>
+                      }
+                    }
+                  </div>
+                </div>
+              </div>
+            </div>
+          } @empty {
+            <div class="text-center py-5">
+              <i class="bi bi-music-note-beamed" style="font-size: 3rem; color: #ccc;"></i>
+              <p class="mt-3 text-muted">В плейлисте нет треков</p>
+              @if (isOwner()) {
+                <a routerLink="/albums" class="btn btn-primary mt-2">
+                  <i class="bi bi-plus-circle me-2"></i>
+                  Добавить треки
+                </a>
+              }
+            </div>
+          }
+        </div>
+      </div>
+    }
+  }
+</div>
+
+@if (showPositionModal() && selectedTrackForPosition()) {
+  <app-track-position-modal
+    [track]="selectedTrackForPosition()!"
+    [totalTracks]="playlist()?.tracks?.length || 0"
+    [currentPosition]="playlist()?.tracks?.findIndex(t => t.id === selectedTrackForPosition()?.id) || 0"
+    (closeModal)="showPositionModal.set(false)"
+    (savePosition)="onPositionChanged($event)">
+  </app-track-position-modal>
+}

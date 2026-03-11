@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../models/auth.models';
+import { Playlist } from '../models/playlist.model';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,10 @@ export class AdminUserService {
 
   getById(id: number): Observable<User> {
     return this.http.get<User>(`${this.apiUrl}/${id}`);
+  }
+
+  getUserPlaylists(id: number): Observable<Playlist[]> {
+    return this.http.get<Playlist[]>(`${this.apiUrl}/${id}/playlists`);
   }
 
   create(user: Partial<User & { password: string }>): Observable<User> {

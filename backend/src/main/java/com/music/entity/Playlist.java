@@ -2,9 +2,11 @@ package com.music.entity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import com.music.dto.response.PlaylistDto;
-import com.music.dto.response.TrackDto;
+import com.music.dto.response.PlaylistTrackDto;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -37,7 +39,7 @@ public class Playlist {
   @Column(name = "cover_image_url", length = 255)
   private String coverImageUrl;
 
-  @OneToMany(mappedBy = "playlist")
+  @OneToMany(mappedBy = "playlist", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
   @OrderBy("position")
   private List<PlaylistTrack> playlistTracks = new ArrayList<>();
 
@@ -49,15 +51,45 @@ public class Playlist {
   }
 
   public static PlaylistDto convertToDto(Playlist playlist) {
-    List<TrackDto> trackDtos = playlist.getTracks().stream()
-      .map(Track::convertToDto)
-      .toList();
+    if (playlist == null) {
+        return null;
+    }
+
+    List<PlaylistTrackDto> trackDtos = new ArrayList<>();
+    if (playlist.getPlaylistTracks() != null) {
+      trackDtos = playlist.getPlaylistTracks().stream()
+        .filter(Objects::nonNull)
+        .map(pt -> {
+          Track track = pt.getTrack();
+          if (track == null) return null;
+          
+          return PlaylistTrackDto.builder()
+            .id(track.getId())
+            .title(track.getTitle())
+            .albumId(track.getAlbum() != null ? track.getAlbum().getId() : null)
+            .albumTitle(track.getAlbum() != null ? track.getAlbum().getTitle() : null)
+            .durationSeconds(track.getDurationSeconds())
+            .fileUrl(track.getFileUrl())
+            .lyrics(track.getLyrics())
+            .releaseDate(track.getReleaseDate())
+            .artists(track.getArtists().stream()
+                .map(Artist::convertToDto)
+                .toList())
+            .genres(track.getGenres().stream()
+                .map(Genre::convertToDto)
+                .toList())
+            .position(pt.getPosition())
+            .build();
+        })
+        .filter(Objects::nonNull)
+        .collect(Collectors.toList());
+    }
 
     return new PlaylistDto(
       playlist.getId(),
       playlist.getName(),
-      playlist.getUser().getId(),
-      playlist.getUser().getName(),
+      playlist.getUser() != null ? playlist.getUser().getId() : null,
+      playlist.getUser() != null ? playlist.getUser().getName() : null,
       playlist.getIsPublic(),
       playlist.getCoverImageUrl(),
       trackDtos

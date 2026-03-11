@@ -1,0 +1,41 @@
+<div class="container py-4">
+  <h1 class="h3 mb-4">Публичные плейлисты</h1>
+
+  @if (loading()) {
+    <div class="text-center py-5">
+      <div class="spinner-border text-primary">
+        <span class="visually-hidden">Загрузка...</span>
+      </div>
+    </div>
+  } @else {
+    @if (playlists().length === 0) {
+      <div class="text-center py-5">
+        <i class="bi bi-music-note-list" style="font-size: 3rem; color: #ccc;"></i>
+        <p class="mt-3 text-muted">Публичные плейлисты не найдены</p>
+      </div>
+    } @else {
+      <div class="row g-4">
+        @for (playlist of playlists(); track playlist.id) {
+          <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <a [routerLink]="['/playlists', playlist.id]" class="text-decoration-none">
+              <div class="card h-100 shadow-sm">
+                <img 
+                  [src]="getPlaylistCoverUrl(playlist)" 
+                  [alt]="playlist.name"
+                  class="card-img-top"
+                  style="aspect-ratio: 1/1; object-fit: cover;">
+                <div class="card-body">
+                  <h5 class="card-title text-truncate text-dark">{{ playlist.name }}</h5>
+                  <p class="card-text small text-muted">
+                    <i class="bi bi-person-circle me-1"></i>
+                    {{ playlist.userName }} · {{ playlist.tracks.length }} треков
+                  </p>
+                </div>
+              </div>
+            </a>
+          </div>
+        }
+      </div>
+    }
+  }
+</div>

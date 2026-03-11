@@ -141,6 +141,22 @@ public class GlobalExceptionHandler {
     );
   }
 
+  @ExceptionHandler(IllegalArgumentException.class)
+  public ResponseEntity<ErrorResponse> handleIllegalArgument(IllegalArgumentException ex) {
+    return new ResponseEntity<>(
+      new ErrorResponse(ex.getMessage()),
+      HttpStatus.BAD_REQUEST
+    );
+  }
+
+  @ExceptionHandler(IllegalStateException.class)
+  public ResponseEntity<ErrorResponse> handleIllegalState(IllegalStateException ex) {
+    return new ResponseEntity<>(
+      new ErrorResponse(ex.getMessage()),
+      HttpStatus.BAD_REQUEST
+    );
+  }
+
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseEntity<ErrorResponse> handleValidationExceptions(MethodArgumentNotValidException ex) {
     String errorMessage = ex.getBindingResult().getAllErrors().get(0).getDefaultMessage();

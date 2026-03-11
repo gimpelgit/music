@@ -32,5 +32,5 @@ public class PlaylistDto {
   @Size(max = 255, message = "URL обложки не должен превышать 255 символов")
   private String coverImageUrl;
 
-  private List<TrackDto> tracks;
+  private List<PlaylistTrackDto> tracks;
 }

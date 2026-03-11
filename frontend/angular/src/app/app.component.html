@@ -2,6 +2,23 @@
   <div class="container-fluid">
     <a class="navbar-brand" routerLink="/" href="/">{{ title }}</a>
     
+    <div class="navbar-nav me-auto">
+      @if (authService.isAuthenticated()) {
+        <a class="nav-link" routerLink="/albums" href="/albums">
+          <i class="bi bi-disc me-1"></i>
+          Альбомы
+        </a>
+        <a class="nav-link" routerLink="/playlists/public" href="/playlists/public">
+          <i class="bi bi-globe me-1"></i>
+          Публичные плейлисты
+        </a>
+        <a class="nav-link" routerLink="/playlists" href="/playlists">
+          <i class="bi bi-music-note-list me-1"></i>
+          Мои плейлисты
+        </a>
+      }
+    </div>
+    
     <div class="navbar-nav ms-auto">
       @if (authService.isAuthenticated()) {
         @if (authService.isAdmin()) {

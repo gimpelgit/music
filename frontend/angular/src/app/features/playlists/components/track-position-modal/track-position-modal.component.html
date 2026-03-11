@@ -1,0 +1,44 @@
+<div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Изменить позицию трека</h5>
+        <button type="button" class="btn-close" (click)="closeModal.emit()"></button>
+      </div>
+      
+      <div class="modal-body">
+        <div class="mb-3">
+          <div class="d-flex gap-2 align-items-center mb-3">
+            <div class="bg-secondary bg-opacity-10 p-2 rounded">
+              <i class="bi bi-music-note-beamed fs-4"></i>
+            </div>
+            <div>
+              <div class="fw-semibold">{{ track.title }}</div>
+              <div class="small text-muted">{{ formatArtists(track.artists) }} · {{ formatDuration(track.durationSeconds) }}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="trackPosition" class="form-label fw-semibold">Новая позиция (1 - {{ totalTracks }})</label>
+          <input
+            id="trackPosition" 
+            type="number" 
+            class="form-control" 
+            [(ngModel)]="newPosition"
+            min="1"
+            [max]="totalTracks"
+            step="1">
+          <div class="form-text text-muted small">
+            Текущая позиция: {{ currentPosition + 1 }}
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeModal.emit()">Отмена</button>
+        <button type="button" class="btn btn-primary" (click)="onSave()">Сохранить</button>
+      </div>
+    </div>
+  </div>
+</div>

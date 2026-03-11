@@ -29,10 +29,6 @@
               <i class="bi bi-play-fill me-2"></i>
               Слушать альбом
             </button>
-            <button class="btn btn-outline-primary btn-lg">
-              <i class="bi bi-plus-circle me-2"></i>
-              Добавить в Мою Музыку
-            </button>
           </div>
         </div>
       </div>
@@ -72,7 +68,7 @@
               
               <div class="col-auto">
                 <button 
-                  class="btn btn-sm btn-outline-primary rounded-circle" 
+                  class="btn btn-sm btn-outline-primary rounded-circle me-2" 
                   style="width: 40px; height: 40px;"
                   (click)="playTrack(track)">
                   <i class="bi" 
@@ -80,6 +76,15 @@
                     [class.bi-pause-fill]="playerService.currentTrack()?.id === track.id && playerService.isPlaying()">
                   </i>
                 </button>
+
+                @if (authService.isAuthenticated()) {
+                  <button 
+                    class="btn btn-sm btn-outline-success rounded-circle" 
+                    style="width: 40px; height: 40px;"
+                    (click)="openAddToPlaylistModal(track)">
+                    <i class="bi bi-plus-lg"></i>
+                  </button>
+                }
               </div>
             </div>
           </div>
@@ -99,3 +104,11 @@
     </div>
   }
 </div>
+
+@if (showPlaylistModal() && selectedTrack()) {
+  <app-add-to-playlist-modal
+    [track]="selectedTrack()!"
+    (closeModal)="closePlaylistModal()"
+    (addToPlaylist)="onAddToPlaylist($event)">
+  </app-add-to-playlist-modal>
+}

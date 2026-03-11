@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,8 +21,7 @@ public class CreatePlaylistRequest {
 
   private Boolean isPublic = false;
 
-  @Size(max = 255, message = "URL обложки не должен превышать 255 символов")
-  private String coverImageUrl;
+  private MultipartFile coverImage;
 
   private List<Long> trackIds;
 }
