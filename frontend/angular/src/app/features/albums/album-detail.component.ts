@@ -5,7 +5,7 @@ import { Subject, takeUntil, switchMap } from 'rxjs';
 import { AlbumService } from '../../core/services/album.service';
 import { TrackService } from '../../core/services/track.service';
 import { PlayerService } from '../../core/services/player.service';
-import { Album } from '../../core/models/album.model';
+import { Album, getAlbumCoverUrl } from '../../core/models/album.model';
 import { Track } from '../../core/models/track.model';
 
 @Component({
@@ -19,6 +19,8 @@ export class AlbumDetailComponent implements OnInit, OnDestroy {
   tracks = signal<Track[]>([]);
   
   private readonly destroy$ = new Subject<void>();
+
+  protected readonly getAlbumCoverUrl = getAlbumCoverUrl;
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -55,16 +57,6 @@ export class AlbumDetailComponent implements OnInit, OnDestroy {
         next: (tracks) => this.tracks.set(tracks),
         error: (error) => console.error('Error loading tracks:', error)
       });
-  }
-
-  getCoverImage(album: Album): string {
-    if (album.coverImageUrl) {
-      if (album.coverImageUrl.startsWith('http')) {
-        return album.coverImageUrl;
-      }
-      return 'http://localhost:8080' + album.coverImageUrl;
-    }
-    return 'https://via.placeholder.com/300x300?text=No+Cover';
   }
 
   formatArtists(artists: { name: string }[]): string {

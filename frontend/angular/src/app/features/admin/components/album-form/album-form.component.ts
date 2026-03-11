@@ -5,7 +5,7 @@ import { Router, ActivatedRoute, RouterLink } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { AdminAlbumService } from '../../../../core/services/admin-album.service';
 import { NotificationService } from '../../../../core/services/notification.service';
-import { Album } from '../../../../core/models/album.model';
+import { Album, getAlbumCoverUrl } from '../../../../core/models/album.model';
 
 @Component({
   selector: 'app-album-form',
@@ -23,6 +23,8 @@ export class AlbumFormComponent implements OnInit, OnDestroy {
   albumId: number | null = null;
 
   private readonly destroy$ = new Subject<void>();
+
+  protected readonly getAlbumCoverUrl = getAlbumCoverUrl;
 
   constructor(
     private readonly albumService: AdminAlbumService,
@@ -53,11 +55,7 @@ export class AlbumFormComponent implements OnInit, OnDestroy {
         next: (album) => {
           this.album = album;
           if (album.coverImageUrl) {
-            if (album.coverImageUrl.startsWith('http')) {
-              this.existingCoverUrl = album.coverImageUrl;
-            } else {
-              this.existingCoverUrl = 'http://localhost:8080' + album.coverImageUrl;
-            }
+            this.existingCoverUrl = getAlbumCoverUrl(album);
           }
           this.loading.set(false);
         },

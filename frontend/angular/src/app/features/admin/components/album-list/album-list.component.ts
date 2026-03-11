@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { AdminAlbumService } from '../../../../core/services/admin-album.service';
-import { Album } from '../../../../core/models/album.model';
+import { Album, getAlbumCoverUrl } from '../../../../core/models/album.model';
 import { NotificationService } from '../../../../core/services/notification.service';
 
 @Component({
@@ -18,6 +18,8 @@ export class AlbumListComponent implements OnInit, OnDestroy {
   deleteConfirmId = signal<number | null>(null);
 
   private readonly destroy$ = new Subject<void>();
+
+  protected readonly getAlbumCoverUrl = getAlbumCoverUrl;
 
   constructor(
     private readonly albumService: AdminAlbumService,
@@ -76,15 +78,5 @@ export class AlbumListComponent implements OnInit, OnDestroy {
           this.loading.set(false);
         }
       });
-  }
-
-  getCoverImage(album: Album): string {
-    if (album.coverImageUrl) {
-      if (album.coverImageUrl.startsWith('http')) {
-        return album.coverImageUrl;
-      }
-      return 'http://localhost:8080' + album.coverImageUrl;
-    }
-    return 'https://via.placeholder.com/40x40?text=No+Cover';
   }
 }

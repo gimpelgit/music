@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { Album } from '../../../core/models/album.model';
+import { Album, getAlbumCoverUrl } from '../../../core/models/album.model';
 
 @Component({
   selector: 'app-album-card',
@@ -13,13 +13,5 @@ import { Album } from '../../../core/models/album.model';
 export class AlbumCardComponent {
   @Input({ required: true }) album!: Album;
 
-  getCoverImage(): string {
-    if (this.album.coverImageUrl) {
-      if (this.album.coverImageUrl.startsWith('http')) {
-        return this.album.coverImageUrl;
-      }
-      return 'http://localhost:8080' + this.album.coverImageUrl;
-    }
-    return 'https://via.placeholder.com/300x300?text=No+Cover';
-  }
+  protected readonly getAlbumCoverUrl = getAlbumCoverUrl;
 }
