@@ -6,13 +6,15 @@ import { ArtistListComponent } from './components/artist-list/artist-list.compon
 import { ArtistFormComponent } from './components/artist-form/artist-form.component';
 import { UserListComponent } from './components/user-list/user-list.component';
 import { UserFormComponent } from './components/user-form/user-form.component';
+import { TrackListComponent } from './components/track-list/track-list.component';
+import { TrackFormComponent } from './components/track-form/track-form.component';
 
 export const ADMIN_ROUTES: Routes = [
   {
     path: '',
     component: AdminComponent,
     children: [
-      { path: '', redirectTo: 'genres', pathMatch: 'full' },
+      { path: '', redirectTo: 'users', pathMatch: 'full' },
       { path: 'users', component: UserListComponent },
       { path: 'users/new', component: UserFormComponent },
       { path: 'users/:id/edit', component: UserFormComponent },
@@ -21,7 +23,10 @@ export const ADMIN_ROUTES: Routes = [
       { path: 'genres/:id/edit', component: GenreFormComponent },
       { path: 'artists', component: ArtistListComponent },
       { path: 'artists/new', component: ArtistFormComponent },
-      { path: 'artists/:id/edit', component: ArtistFormComponent }
+      { path: 'artists/:id/edit', component: ArtistFormComponent },
+      { path: 'tracks', component: TrackListComponent },
+      { path: 'tracks/new', component: TrackFormComponent },
+      { path: 'tracks/:id/edit', component: TrackFormComponent }
     ]
   }
 ];

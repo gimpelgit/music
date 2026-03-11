@@ -6,6 +6,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import com.music.dto.response.ErrorResponse;
 
@@ -97,6 +98,38 @@ public class GlobalExceptionHandler {
     return new ResponseEntity<>(
       new ErrorResponse("Неверный email или пароль"),
       HttpStatus.UNAUTHORIZED
+    );
+  }
+
+  @ExceptionHandler(FileUploadException.class)
+  public ResponseEntity<ErrorResponse> handleFileUpload(FileUploadException ex) {
+    return new ResponseEntity<>(
+      new ErrorResponse(ex.getMessage()),
+      HttpStatus.BAD_REQUEST
+    );
+  }
+
+  @ExceptionHandler(MaxUploadSizeExceededException.class)
+  public ResponseEntity<ErrorResponse> handleMaxSizeException(MaxUploadSizeExceededException ex) {
+    return new ResponseEntity<>(
+      new ErrorResponse("Размер файла превышает допустимый лимит"),
+      HttpStatus.PAYLOAD_TOO_LARGE
+    );
+  }
+
+  @ExceptionHandler(InvalidAudioFileException.class)
+  public ResponseEntity<ErrorResponse> handleInvalidAudioFile(InvalidAudioFileException ex) {
+    return new ResponseEntity<>(
+      new ErrorResponse(ex.getMessage()),
+      HttpStatus.BAD_REQUEST
+    );
+  }
+
+  @ExceptionHandler(AudioFileUploadException.class)
+  public ResponseEntity<ErrorResponse> handleAudioFileUpload(AudioFileUploadException ex) {
+    return new ResponseEntity<>(
+      new ErrorResponse(ex.getMessage()),
+      HttpStatus.INTERNAL_SERVER_ERROR
     );
   }
 

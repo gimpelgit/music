@@ -45,7 +45,7 @@ public class Track {
   @Column(name = "release_date")
   private LocalDate releaseDate;
 
-  @ManyToMany
+  @ManyToMany(cascade = CascadeType.REMOVE)
   @JoinTable(
     name = "tracks_artists", 
     joinColumns = @JoinColumn(name = "track_id"), 
@@ -53,7 +53,7 @@ public class Track {
   )
   private List<Artist> artists = new ArrayList<>();
 
-  @ManyToMany
+  @ManyToMany(cascade = CascadeType.REMOVE)
   @JoinTable(
     name = "tracks_genres",
     joinColumns = @JoinColumn(name = "track_id"),

@@ -1,6 +1,8 @@
 package com.music.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import java.util.Objects;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,10 +23,12 @@ public class PlaylistTrack {
 
   @ManyToOne
   @JoinColumn(name = "playlist_id", nullable = false)
+  @OnDelete(action = OnDeleteAction.CASCADE)
   private Playlist playlist;
 
   @ManyToOne
   @JoinColumn(name = "track_id", nullable = false)
+  @OnDelete(action = OnDeleteAction.CASCADE)
   private Track track;
 
   @Column(name = "position", nullable = false)

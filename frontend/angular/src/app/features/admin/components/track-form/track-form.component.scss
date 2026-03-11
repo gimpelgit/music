@@ -1,0 +1,26 @@
+.card.bg-light {
+  .card-body {
+    max-height: 200px;
+    overflow-y: auto;
+  }
+}
+
+.btn-sm {
+  &.btn-primary {
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+  
+  &.btn-outline-secondary {
+    &:hover {
+      background-color: #e9ecef;
+      color: #000;
+    }
+  }
+}
+
+textarea {
+  resize: vertical;
+  min-height: 100px;
+}

@@ -9,6 +9,10 @@ import lombok.AllArgsConstructor;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,8 +26,7 @@ public class UpdateTrackRequest {
   @Min(value = 1, message = "Длительность трека должна быть положительным числом")
   private Integer durationSeconds;
 
-  @Size(max = 255, message = "URL файла не должен превышать 255 символов")
-  private String fileUrl;
+  private MultipartFile audioFile;
 
   @Size(max = 5000, message = "Текст песни не должен превышать 5000 символов")
   private String lyrics;
@@ -33,4 +36,13 @@ public class UpdateTrackRequest {
   private List<Long> artistIds;
 
   private List<Long> genreIds;
+
+  @JsonProperty("clearReleaseDate")
+  private boolean clearReleaseDate = false;
+  
+  @JsonProperty("clearLyrics")
+  private boolean clearLyrics = false;
+  
+  @JsonProperty("clearAlbumId")
+  private boolean clearAlbumId = false;
 }

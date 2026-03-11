@@ -22,9 +22,11 @@ import java.util.Optional;
 public class AlbumService {
 
   private final AlbumRepository albumRepository;
+  private final FileStorageService fileStorageService;
 
-  public AlbumService(AlbumRepository albumRepository) {
+  public AlbumService(AlbumRepository albumRepository, FileStorageService fileStorageService) {
     this.albumRepository = albumRepository;
+    this.fileStorageService = fileStorageService;
   }
 
   public List<AlbumDto> getAllAlbums() {
@@ -43,7 +45,11 @@ public class AlbumService {
   public AlbumDto createAlbum(CreateAlbumRequest request) {
     Album album = new Album();
     album.setTitle(request.getTitle());
-    album.setCoverImageUrl(request.getCoverImageUrl());
+
+    if (request.getCoverImage() != null && !request.getCoverImage().isEmpty()) {
+      String imageUrl = fileStorageService.saveAlbumImage(request.getCoverImage());
+      album.setCoverImageUrl(imageUrl);
+    }
 
     Album savedAlbum = albumRepository.save(album);
     return Album.convertToDto(savedAlbum);
@@ -58,8 +64,13 @@ public class AlbumService {
       album.setTitle(request.getTitle());
     }
 
-    if (request.getCoverImageUrl() != null) {
-      album.setCoverImageUrl(request.getCoverImageUrl());
+    if (request.getCoverImage() != null && !request.getCoverImage().isEmpty()) {
+      if (album.getCoverImageUrl() != null) {
+        fileStorageService.deleteAlbumImage(album.getCoverImageUrl());
+      }
+      
+      String imageUrl = fileStorageService.saveAlbumImage(request.getCoverImage());
+      album.setCoverImageUrl(imageUrl);
     }
 
     Album updatedAlbum = albumRepository.save(album);
@@ -68,10 +79,14 @@ public class AlbumService {
 
   @Transactional
   public void deleteAlbum(Long id) {
-    if (!albumRepository.existsById(id)) {
-      throw new AlbumNotFoundException(id);
+    Album album = albumRepository.findById(id)
+      .orElseThrow(() -> new AlbumNotFoundException(id));
+
+    if (album.getCoverImageUrl() != null) {
+      fileStorageService.deleteAlbumImage(album.getCoverImageUrl());
     }
-    albumRepository.deleteById(id);
+
+    albumRepository.delete(album);
   }
 
   public PageResponse<AlbumDto> findAlbumsByFilters(AlbumFilterRequest filterRequest) {

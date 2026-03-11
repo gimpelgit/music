@@ -1,0 +1,243 @@
+<div class="card shadow">
+  <div class="card-header bg-white py-3">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-0">
+        <li class="breadcrumb-item">
+          <a routerLink="/admin/tracks" class="text-decoration-none">Треки</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+          {{ isEditing() ? 'Редактирование' : 'Создание' }}
+        </li>
+      </ol>
+    </nav>
+  </div>
+
+  <div class="card-body">
+    @if (loading()) {
+      <div class="text-center py-4">
+        <div class="spinner-border text-primary">
+          <span class="visually-hidden">Загрузка...</span>
+        </div>
+      </div>
+    } @else {
+      <form (ngSubmit)="onSubmit()" #trackForm="ngForm">
+        <!-- Основная информация -->
+        <div class="row">
+          <div class="col-md-8">
+            <div class="mb-3">
+              <label for="title" class="form-label fw-semibold">
+                Название трека <span class="text-danger">*</span>
+              </label>
+              <input 
+                type="text" 
+                class="form-control" 
+                id="title"
+                name="title"
+                [(ngModel)]="trackData.title"
+                required
+                minlength="2"
+                maxlength="200"
+                #title="ngModel"
+                placeholder="Введите название трека">
+              
+              @if (title.invalid && (title.dirty || title.touched)) {
+                <div class="text-danger small mt-1">
+                  @if (title.errors?.['required']) {
+                    <span>Название трека обязательно</span>
+                  }
+                  @if (title.errors?.['minlength']) {
+                    <span>Минимальная длина 2 символа</span>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+          
+          <div class="col-md-4">
+            <div class="mb-3">
+              <label for="album" class="form-label fw-semibold">Альбом</label>
+              <select 
+                class="form-select" 
+                id="album"
+                name="albumId"
+                [(ngModel)]="trackData.albumId">
+                <option [ngValue]="null">— Без альбома —</option>
+                @for (album of albums(); track album.id) {
+                  <option [value]="album.id">{{ album.title }}</option>
+                }
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">
+              Длительность <span class="text-danger">*</span>
+            </label>
+            <div class="row g-2">
+              <div class="col">
+                <input 
+                  type="number" 
+                  class="form-control" 
+                  placeholder="Минуты"
+                  [(ngModel)]="trackData.durationMinutes"
+                  name="durationMinutes"
+                  min="0"
+                  max="60"
+                  required>
+              </div>
+              <div class="col">
+                <input 
+                  type="number" 
+                  class="form-control" 
+                  placeholder="Секунды"
+                  [(ngModel)]="trackData.durationSeconds"
+                  name="durationSeconds"
+                  min="0"
+                  max="59"
+                  required>
+              </div>
+            </div>
+            @if (getDurationHint()) {
+              <div class="text-muted small mt-1">
+                Итого: {{ getDurationHint() }}
+              </div>
+            }
+          </div>
+          
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label for="releaseDate" class="form-label fw-semibold">Дата релиза</label>
+              <input 
+                type="date" 
+                class="form-control" 
+                id="releaseDate"
+                name="releaseDate"
+                [(ngModel)]="trackData.releaseDate">
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold">
+            Исполнители <span class="text-danger">*</span>
+          </label>
+          <div class="card bg-light">
+            <div class="card-body">
+              <div class="d-flex flex-wrap gap-2">
+                @for (artist of artists(); track artist.id) {
+                  <button 
+                    type="button"
+                    class="btn btn-sm"
+                    [class.btn-primary]="isArtistSelected(artist.id)"
+                    [class.btn-outline-secondary]="!isArtistSelected(artist.id)"
+                    (click)="onArtistToggle(artist.id)">
+                    {{ artist.name }}
+                  </button>
+                } @empty {
+                  <span class="text-muted">Нет доступных исполнителей</span>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold">
+            Жанры <span class="text-danger">*</span>
+          </label>
+          <div class="card bg-light">
+            <div class="card-body">
+              <div class="d-flex flex-wrap gap-2">
+                @for (genre of genres(); track genre.id) {
+                  <button 
+                    type="button"
+                    class="btn btn-sm"
+                    [class.btn-primary]="isGenreSelected(genre.id)"
+                    [class.btn-outline-secondary]="!isGenreSelected(genre.id)"
+                    (click)="onGenreToggle(genre.id)">
+                    {{ genre.name }}
+                  </button>
+                } @empty {
+                  <span class="text-muted">Нет доступных жанров</span>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Аудиофайл -->
+        <div class="mb-3">
+          <label for="audioFile" class="form-label fw-semibold">
+            Аудиофайл
+            @if (!isEditing()) {
+              <span class="text-danger">*</span>
+            }
+          </label>
+          
+          @if (isEditing() && !audioFile) {
+            <div class="alert alert-info py-2 mb-2">
+              <small>
+                <i class="bi bi-info-circle me-1"></i>
+                Текущий файл: {{ existingTrack?.fileUrl?.split('/')?.pop() || 'загружен' }}
+              </small>
+            </div>
+          }
+          
+          <input 
+            type="file" 
+            class="form-control" 
+            id="audioFile"
+            accept=".mp3,.wav,.ogg,.aac,audio/mpeg,audio/wav,audio/ogg,audio/aac"
+            (change)="onFileSelected($event)">
+          
+          <div class="form-text text-muted small">
+            Поддерживаемые форматы: MP3, WAV, OGG, AAC. Максимальный размер: 50MB
+          </div>
+        </div>
+
+        <!-- Текст песни -->
+        <div class="mb-3">
+          <label for="lyrics" class="form-label fw-semibold">Текст песни</label>
+          <textarea 
+            class="form-control" 
+            id="lyrics"
+            name="lyrics"
+            [(ngModel)]="trackData.lyrics"
+            rows="5"
+            maxlength="5000"
+            placeholder="Введите текст песни (необязательно)"></textarea>
+          <div class="form-text text-muted small">
+            Максимальная длина: 5000 символов
+          </div>
+        </div>
+
+        <!-- Кнопки -->
+        <div class="d-flex gap-2 mt-4">
+          <button 
+            type="submit" 
+            class="btn btn-primary"
+            [disabled]="submitting()">
+            @if (submitting()) {
+              <span class="spinner-border spinner-border-sm me-2"></span>
+              Сохранение...
+            } @else {
+              <i class="bi bi-check-lg me-2"></i>
+              Сохранить
+            }
+          </button>
+          
+          <button 
+            type="button" 
+            class="btn btn-outline-secondary"
+            (click)="onCancel()"
+            [disabled]="submitting()">
+            <i class="bi bi-x-lg me-2"></i>
+            Отмена
+          </button>
+        </div>
+      </form>
+    }
+  </div>
+</div>

@@ -1,6 +1,8 @@
 package com.music.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +30,7 @@ public class Artist {
   private String name;
 
   @ManyToMany(mappedBy = "artists")
+  @OnDelete(action = OnDeleteAction.CASCADE)
   private List<Track> tracks = new ArrayList<>();
 
   public Artist(String name) {

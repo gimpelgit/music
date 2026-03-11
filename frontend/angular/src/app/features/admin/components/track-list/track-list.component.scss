@@ -1,0 +1,19 @@
+.search-wrapper {
+  min-width: 250px;
+}
+
+.artists-list {
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.genres-list {
+  max-width: 200px;
+}
+
+.badge {
+  font-weight: normal;
+  font-size: 0.75rem;
+}

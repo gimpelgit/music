@@ -11,6 +11,8 @@ import lombok.AllArgsConstructor;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,9 +28,8 @@ public class CreateTrackRequest {
   @Min(value = 1, message = "Длительность трека должна быть положительным числом")
   private Integer durationSeconds;
 
-  @NotBlank(message = "URL файла трека обязателен")
-  @Size(max = 255, message = "URL файла не должен превышать 255 символов")
-  private String fileUrl;
+  @NotNull(message = "Аудиофайл трека обязателен")
+  private MultipartFile audioFile;
 
   @Size(max = 5000, message = "Текст песни не должен превышать 5000 символов")
   private String lyrics;

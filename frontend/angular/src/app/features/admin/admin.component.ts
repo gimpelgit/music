@@ -14,7 +14,8 @@ export class AdminComponent {
   menuItems = [
     { path: 'users', icon: 'bi-people', label: 'Пользователи' },
     { path: 'genres', icon: 'bi-tags', label: 'Жанры' },
-    { path: 'artists', icon: 'bi-mic', label: 'Исполнители' }
+    { path: 'artists', icon: 'bi-mic', label: 'Исполнители' },
+    { path: 'tracks', icon: 'bi-music-note-beamed', label: 'Треки' },
   ];
 
   constructor(
