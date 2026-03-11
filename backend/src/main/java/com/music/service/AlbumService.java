@@ -6,8 +6,11 @@ import com.music.dto.request.UpdateAlbumRequest;
 import com.music.dto.response.AlbumDto;
 import com.music.dto.response.PageResponse;
 import com.music.entity.Album;
+import com.music.entity.Track;
+import com.music.exception.AlbumHasTracksException;
 import com.music.exception.AlbumNotFoundException;
 import com.music.repository.AlbumRepository;
+import com.music.repository.TrackRepository;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,11 +25,17 @@ import java.util.Optional;
 public class AlbumService {
 
   private final AlbumRepository albumRepository;
+  private final TrackRepository trackRepository;
   private final FileStorageService fileStorageService;
 
-  public AlbumService(AlbumRepository albumRepository, FileStorageService fileStorageService) {
+  public AlbumService(
+    AlbumRepository albumRepository, 
+    TrackRepository trackRepository,
+    FileStorageService fileStorageService
+  ) {
     this.albumRepository = albumRepository;
     this.fileStorageService = fileStorageService;
+    this.trackRepository = trackRepository;
   }
 
   public List<AlbumDto> getAllAlbums() {
@@ -81,6 +90,11 @@ public class AlbumService {
   public void deleteAlbum(Long id) {
     Album album = albumRepository.findById(id)
       .orElseThrow(() -> new AlbumNotFoundException(id));
+
+    List<Track> tracks = trackRepository.findByAlbumId(id);
+    if (!tracks.isEmpty()) {
+      throw new AlbumHasTracksException(id);
+    }
 
     if (album.getCoverImageUrl() != null) {
       fileStorageService.deleteAlbumImage(album.getCoverImageUrl());

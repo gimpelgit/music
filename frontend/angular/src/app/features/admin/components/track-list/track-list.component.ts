@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, signal } from '@angular/core';
+import { Component, OnInit, OnDestroy, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
@@ -20,6 +20,29 @@ export class TrackListComponent implements OnInit, OnDestroy {
   loading = signal(false);
   deleteConfirmId = signal<number | null>(null);
   searchQuery = signal('');
+
+  private readonly sortedTracks = computed(() => {
+    const tracks = this.tracks();
+    return [...tracks].sort((a, b) => {
+      const aHasNoAlbum = !a.albumId;
+      const bHasNoAlbum = !b.albumId;
+      
+      if (aHasNoAlbum && !bHasNoAlbum) return -1;
+      if (!aHasNoAlbum && bHasNoAlbum) return 1;
+      
+      if (!aHasNoAlbum && !bHasNoAlbum) {
+        const albumA = (a.albumTitle || '').toLowerCase();
+        const albumB = (b.albumTitle || '').toLowerCase();
+        
+        if (albumA < albumB) return -1;
+        if (albumA > albumB) return 1;
+      }
+
+      const titleA = (a.title || '').toLowerCase();
+      const titleB = (b.title || '').toLowerCase();
+      return titleA.localeCompare(titleB);
+    });
+  });
 
   private readonly destroy$ = new Subject<void>();
 
@@ -61,15 +84,17 @@ export class TrackListComponent implements OnInit, OnDestroy {
 
   private applyFilter(): void {
     const query = this.searchQuery().toLowerCase();
+    const sortedTracks = this.sortedTracks();
+    
     if (!query) {
-      this.filteredTracks.set(this.tracks());
+      this.filteredTracks.set(sortedTracks);
       return;
     }
 
-    const filtered = this.tracks().filter(track => 
+    const filtered = sortedTracks.filter(track => 
       track.title.toLowerCase().includes(query) ||
       track.artists.some(a => a.name.toLowerCase().includes(query)) ||
-      track.albumTitle?.toLowerCase().includes(query)
+      (track.albumTitle?.toLowerCase().includes(query))
     );
     this.filteredTracks.set(filtered);
   }
@@ -116,5 +141,13 @@ export class TrackListComponent implements OnInit, OnDestroy {
           this.loading.set(false);
         }
       });
+  }
+
+  getAlbumDisplay(track: Track): string {
+    return track.albumTitle || '— Без альбома —';
+  }
+
+  getRowClass(track: Track): string {
+    return track.albumId ? '' : 'table-secondary';
   }
 }

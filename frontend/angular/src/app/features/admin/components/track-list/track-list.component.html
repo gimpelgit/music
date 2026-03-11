@@ -53,7 +53,11 @@
                 <tr>
                   <td class="fw-medium">{{ track.id }}</td>
                   <td>{{ track.title }}</td>
-                  <td>{{ track.albumTitle || '-' }}</td>
+                  <td>
+                    <span [class.fst-italic]="!track.albumId" [class.text-muted]="!track.albumId">
+                      {{ getAlbumDisplay(track) }}
+                    </span>
+                  </td>
                   <td>
                     <div class="artists-list">
                       {{ formatArtists(track.artists) }}
@@ -91,8 +95,14 @@
             </tbody>
           </table>
           
-          <div class="text-muted small mt-2">
-            Всего записей: {{ filteredTracks().length }}
+          <div class="d-flex justify-content-between align-items-center mt-2">
+            <div class="text-muted small">
+              Всего записей: {{ filteredTracks().length }}
+            </div>
+            <div class="text-muted small">
+              <i class="bi bi-info-circle me-1"></i>
+              <span class="fst-italic">Треки без альбома выделены серым цветом</span>
+            </div>
           </div>
         </div>
       }

@@ -61,6 +61,14 @@ public class GlobalExceptionHandler {
     );
   }
 
+  @ExceptionHandler(AlbumHasTracksException.class)
+  public ResponseEntity<ErrorResponse> handleAlbumHasTracks(AlbumHasTracksException ex) {
+    return new ResponseEntity<>(
+      new ErrorResponse(ex.getMessage()),
+      HttpStatus.CONFLICT
+    );
+  }
+
   @ExceptionHandler(TrackNotFoundException.class)
   public ResponseEntity<ErrorResponse> handleTrackNotFound(TrackNotFoundException ex) {
     return new ResponseEntity<>(
