@@ -1,67 +1,256 @@
-INSERT INTO users (role, username, password, name) VALUES 
-('ROLE_ADMIN', 'admin',  '$2a$10$S6qhg/aJjuNsLic6PnoBE.tb6fMjsENm8gOqQ8taZ.pt4Eikf.HO6', 'Алексей'),
-('ROLE_USER',  'elena',  '$2a$10$S6qhg/aJjuNsLic6PnoBE.tb6fMjsENm8gOqQ8taZ.pt4Eikf.HO6', 'Елена'),
-('ROLE_USER',  'dmitry', '$2a$10$S6qhg/aJjuNsLic6PnoBE.tb6fMjsENm8gOqQ8taZ.pt4Eikf.HO6', 'Дмитрий'),
-('ROLE_USER',  'anna',   '$2a$10$S6qhg/aJjuNsLic6PnoBE.tb6fMjsENm8gOqQ8taZ.pt4Eikf.HO6', 'Анна'),
-('ROLE_USER',  'sergey', '$2a$10$S6qhg/aJjuNsLic6PnoBE.tb6fMjsENm8gOqQ8taZ.pt4Eikf.HO6', 'Сергей');
+--
+-- PostgreSQL database dump
+--
 
-INSERT INTO artists (name) VALUES 
-('Miyagi & Эндшпиль'),
-('Баста'),
-('Земфира'),
-('Сплин'),
-('Noize MC');
+\restrict CToiWMdJKcwRJ8NIWq3NHrE4sa2bvdaNCpze6Ma7XOnK7s14z1augP6va0Ynpjb
 
-INSERT INTO genres (name) VALUES 
-('Хип-хоп'),
-('Рэп'),
-('Рок'),
-('Альтернатива'),
-('Поп-рок');
+-- Dumped from database version 18.2 (Ubuntu 18.2-1.pgdg24.04+1)
+-- Dumped by pg_dump version 18.2 (Ubuntu 18.2-1.pgdg24.04+1)
 
-INSERT INTO albums (title, cover_image_url) VALUES 
-('HATTORI', NULL),
-('Баста 40', 'https://example.com/covers/basta40.jpg'),
-('Прости меня моя любовь', 'https://example.com/covers/zemfira.jpg'),
-('Сигнал из космоса', NULL),
-('Царь горы', 'https://example.com/covers/noizemc.jpg');
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET transaction_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
 
-INSERT INTO tracks (title, album_id, duration_seconds, file_url, lyrics, release_date) VALUES 
-('Там где нас нет', 1, 234, 'https://music.example.com/tam_gde_nas_net.mp3', 'Там где нас нет, там где нас нет...', '2022-11-15'),
-('Самая', 2, 198, 'https://music.example.com/samaya.mp3', 'Ты самая, самая, самая...', '2020-12-25'),
-('Хочешь?', 3, 215, 'https://music.example.com/hochesh.mp3', 'Пожалуйста, не умирай, или мне придётся тоже....', '2013-02-14'),
-('Выхода нет', 4, 287, 'https://music.example.com/vyhoda_net.mp3', NULL, '2004-03-01'),
-('Песня для радио', 5, 176, 'https://music.example.com/radio_song.mp3', 'Это песня для радио...', '2021-09-10'),
-('HATTORI', 1, 243, 'https://music.example.com/hattori.mp3', 'Hattori Hattori...', '2022-11-15'),
-('Медляк', 2, 254, 'https://music.example.com/medlyak.mp3', NULL, '2020-12-25'),
-('Искала', 3, 268, 'https://music.example.com/iskala.mp3', NULL, '2013-02-14'),
-('Мое сердце', 4, 225, 'https://music.example.com/my_heart.mp3', 'Мое сердце остановилось...', '2004-03-01'),
-('На Марсе', 5, 192, 'https://music.example.com/on_mars.mp3', 'Мы могли бы жить на Марсе...', '2021-09-10');
+--
+-- Data for Name: albums; Type: TABLE DATA; Schema: public; Owner: psqluser
+--
 
-INSERT INTO tracks_artists (track_id, artist_id) VALUES 
-(1, 1), (2, 2), (3, 3), (4, 4), (5, 5),
-(6, 1), (7, 2), (8, 3), (9, 4), (10, 5);
+INSERT INTO public.albums (id, cover_image_url, title) VALUES (7, '/uploads/albums/486636_big.jpg', 'ANABIOS');
+INSERT INTO public.albums (id, cover_image_url, title) VALUES (9, '/uploads/albums/389361_big.jpg', 'It''s My Life');
+INSERT INTO public.albums (id, cover_image_url, title) VALUES (1, '/uploads/albums/ec07b958-13c6-4f23-85a7-0a2155a73d45.jpg', 'The Mountain');
+INSERT INTO public.albums (id, cover_image_url, title) VALUES (8, '/uploads/albums/319429_big.jpg', 'McMxc A.D.');
+INSERT INTO public.albums (id, cover_image_url, title) VALUES (10, NULL, 'NCS');
 
-INSERT INTO tracks_genres (track_id, genre_id) VALUES 
-(1, 1), (1, 2),  -- Miyagi - хип-хоп/рэп
-(2, 2), (2, 5),  -- Баста - рэп/поп-рок
-(3, 3), (3, 4),  -- Земфира - рок/альтернатива
-(4, 3), (4, 5),  -- Сплин - рок/поп-рок
-(5, 2), (5, 4),  -- Noize MC - рэп/альтернатива
-(6, 1), (6, 2),
-(7, 2), (7, 5),
-(8, 3), (8, 4),
-(9, 3), (9, 5),
-(10, 2), (10, 4);
 
-INSERT INTO playlists (name, user_id, is_public, cover_image_url) VALUES 
-('Рок на все времена', 2, true, 'https://example.com/playlists/rock.jpg'),
-('Тренировка 2024', 3, false, 'https://example.com/playlists/sport.jpg'),
-('Для души', 4, true, 'https://example.com/playlists/soul.jpg'),
-('В машину', 5, true, 'https://example.com/playlists/car.jpg');
+--
+-- Data for Name: artists; Type: TABLE DATA; Schema: public; Owner: psqluser
+--
 
-INSERT INTO playlists_tracks (playlist_id, track_id, position) VALUES 
-(1, 3, 1), (1, 4, 2), (1, 8, 3), (1, 9, 4),
-(2, 2, 1), (2, 5, 2), (2, 10, 3), (2, 1, 4),
-(3, 3, 1), (3, 4, 2), (3, 7, 3), (3, 8, 4),
-(4, 1, 1), (4, 4, 2), (4, 5, 3), (4, 10, 4);
+INSERT INTO public.artists (id, name) VALUES (2, 'Баста');
+INSERT INTO public.artists (id, name) VALUES (3, 'Земфира');
+INSERT INTO public.artists (id, name) VALUES (4, 'Сплин');
+INSERT INTO public.artists (id, name) VALUES (5, 'Noize MC');
+INSERT INTO public.artists (id, name) VALUES (6, 'Miyagi');
+INSERT INTO public.artists (id, name) VALUES (7, 'Эндшпиль');
+INSERT INTO public.artists (id, name) VALUES (8, 'Enigma');
+INSERT INTO public.artists (id, name) VALUES (9, 'Dr. Alban');
+INSERT INTO public.artists (id, name) VALUES (1, 'Miyagi & Эндшпиль');
+INSERT INTO public.artists (id, name) VALUES (10, 'Gorillaz');
+
+
+--
+-- Data for Name: genres; Type: TABLE DATA; Schema: public; Owner: psqluser
+--
+
+INSERT INTO public.genres (id, name) VALUES (1, 'Хип-хоп');
+INSERT INTO public.genres (id, name) VALUES (2, 'Рэп');
+INSERT INTO public.genres (id, name) VALUES (3, 'Рок');
+INSERT INTO public.genres (id, name) VALUES (4, 'Альтернатива');
+INSERT INTO public.genres (id, name) VALUES (5, 'Поп-рок');
+INSERT INTO public.genres (id, name) VALUES (6, 'Панк-рок');
+INSERT INTO public.genres (id, name) VALUES (7, 'Зарубежный рэп');
+INSERT INTO public.genres (id, name) VALUES (8, 'Русский рэп');
+INSERT INTO public.genres (id, name) VALUES (9, 'Русский поп');
+INSERT INTO public.genres (id, name) VALUES (10, 'Зарубежный поп');
+INSERT INTO public.genres (id, name) VALUES (11, 'Эмбиент');
+INSERT INTO public.genres (id, name) VALUES (12, 'Музыка для танцев');
+
+
+--
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: psqluser
+--
+
+INSERT INTO public.users (id, created_at, name, password, role, updated_at, username) VALUES (1, '2023-01-15 09:30:00', 'Алексей', '$2a$10$S6qhg/aJjuNsLic6PnoBE.tb6fMjsENm8gOqQ8taZ.pt4Eikf.HO6', 'ROLE_ADMIN', '2026-03-10 11:43:55.9644', 'admin');
+INSERT INTO public.users (id, created_at, name, password, role, updated_at, username) VALUES (2, '2023-03-22 14:15:00', 'Елена', '$2a$10$e/vEozUxoBfXuRCtpaAUL.73Jem.2K3O9D7njOTpmQDZ0QW4CZRwe', 'ROLE_USER', '2026-03-10 11:32:42.859723', 'elena');
+INSERT INTO public.users (id, created_at, name, password, role, updated_at, username) VALUES (3, '2023-06-05 11:20:00', 'Дмитрий', '$2a$10$S6qhg/aJjuNsLic6PnoBE.tb6fMjsENm8gOqQ8taZ.pt4Eikf.HO6', 'ROLE_USER', NULL, 'dmitry');
+INSERT INTO public.users (id, created_at, name, password, role, updated_at, username) VALUES (4, '2023-09-18 16:45:00', 'Анна', '$2a$10$S6qhg/aJjuNsLic6PnoBE.tb6fMjsENm8gOqQ8taZ.pt4Eikf.HO6', 'ROLE_USER', NULL, 'anna');
+INSERT INTO public.users (id, created_at, name, password, role, updated_at, username) VALUES (5, '2024-01-10 10:00:00', 'Сергей', '$2a$10$S6qhg/aJjuNsLic6PnoBE.tb6fMjsENm8gOqQ8taZ.pt4Eikf.HO6', 'ROLE_USER', '2026-03-05 10:09:09.186672', 'sergey');
+
+
+--
+-- Data for Name: playlists; Type: TABLE DATA; Schema: public; Owner: psqluser
+--
+
+INSERT INTO public.playlists (id, cover_image_url, is_public, name, user_id) VALUES (2, 'https://example.com/playlists/sport.jpg', false, 'Тренировка 2024', 3);
+INSERT INTO public.playlists (id, cover_image_url, is_public, name, user_id) VALUES (6, NULL, true, 'Плейлист', 1);
+INSERT INTO public.playlists (id, cover_image_url, is_public, name, user_id) VALUES (8, NULL, false, 'Плейлист1', 1);
+INSERT INTO public.playlists (id, cover_image_url, is_public, name, user_id) VALUES (12, NULL, false, 'Тестовый', 2);
+INSERT INTO public.playlists (id, cover_image_url, is_public, name, user_id) VALUES (13, NULL, true, 'Какой-то плейлист', 5);
+INSERT INTO public.playlists (id, cover_image_url, is_public, name, user_id) VALUES (14, NULL, true, 'Лучшие треки', 4);
+
+
+--
+-- Data for Name: tracks; Type: TABLE DATA; Schema: public; Owner: psqluser
+--
+
+INSERT INTO public.tracks (id, duration_seconds, file_url, lyrics, release_date, title, album_id) VALUES (22, 240, '/uploads/tracks/1102.mp3', NULL, NULL, 'It''s My Life', 9);
+INSERT INTO public.tracks (id, duration_seconds, file_url, lyrics, release_date, title, album_id) VALUES (1, 285, '/uploads/tracks/e5336d88-a356-4d7b-9e9f-c8eace8c6d09.mp3', 'Там где нас нет, там где нас нет...', '2022-11-15', 'The Happy Dictator', 1);
+INSERT INTO public.tracks (id, duration_seconds, file_url, lyrics, release_date, title, album_id) VALUES (16, 142, 'https://music.example.com/new_track.mp3', NULL, '1990-01-01', 'The Voice of Enigma', 8);
+INSERT INTO public.tracks (id, duration_seconds, file_url, lyrics, release_date, title, album_id) VALUES (26, 439, '/uploads/tracks/9392e832-f8ff-48b4-b217-57d3e2d26264.mp3', NULL, NULL, 'The Manifesto', 1);
+INSERT INTO public.tracks (id, duration_seconds, file_url, lyrics, release_date, title, album_id) VALUES (11, 184, '/uploads/tracks/4acc9031-f646-4755-b531-c4ce68276207.mp3', NULL, NULL, 'Adapter', 7);
+INSERT INTO public.tracks (id, duration_seconds, file_url, lyrics, release_date, title, album_id) VALUES (15, 144, '/uploads/tracks/ae8026d7-a8b5-41e6-9c6e-fc4dc4f62dde.mp3', NULL, NULL, 'Scary move', 7);
+INSERT INTO public.tracks (id, duration_seconds, file_url, lyrics, release_date, title, album_id) VALUES (14, 144, '/uploads/tracks/6665b63f-d4f3-49e8-bb84-dca010ba489f.mp3', NULL, NULL, 'Skill', 7);
+INSERT INTO public.tracks (id, duration_seconds, file_url, lyrics, release_date, title, album_id) VALUES (13, 145, '/uploads/tracks/1e5571e3-3e3a-493e-b19d-8232d305add4.mp3', NULL, NULL, 'Vector', 7);
+INSERT INTO public.tracks (id, duration_seconds, file_url, lyrics, release_date, title, album_id) VALUES (12, 120, '/uploads/tracks/6c8d48a7-b470-4739-9ae9-7a2d663d0506.mp3', NULL, NULL, 'West', 7);
+INSERT INTO public.tracks (id, duration_seconds, file_url, lyrics, release_date, title, album_id) VALUES (23, 196, '/uploads/tracks/acc98318-fea5-4553-94c1-a32f83fcc199.mp3', NULL, NULL, 'I Feel The Music', 9);
+INSERT INTO public.tracks (id, duration_seconds, file_url, lyrics, release_date, title, album_id) VALUES (25, 245, '/uploads/tracks/e9b09775-a42c-42f1-b5aa-36384f304391.mp3', NULL, NULL, 'I Said It Once', 9);
+INSERT INTO public.tracks (id, duration_seconds, file_url, lyrics, release_date, title, album_id) VALUES (24, 255, '/uploads/tracks/05b700d0-3231-448f-a906-a52a849ac200.mp3', NULL, NULL, 'One Love', 9);
+INSERT INTO public.tracks (id, duration_seconds, file_url, lyrics, release_date, title, album_id) VALUES (21, 636, '/uploads/tracks/e7b7a196-83bf-4880-891b-7cfde4cb1319.mp3', NULL, '1990-01-01', 'Back To The Rivers of Belief', 8);
+INSERT INTO public.tracks (id, duration_seconds, file_url, lyrics, release_date, title, album_id) VALUES (18, 270, '/uploads/tracks/24b85026-29bc-4d39-8bbd-7fd416e3f167.mp3', NULL, '1990-01-01', 'Callas Went Away', 8);
+INSERT INTO public.tracks (id, duration_seconds, file_url, lyrics, release_date, title, album_id) VALUES (19, 301, '/uploads/tracks/e3d95496-1282-45a1-afae-631493a917a0.mp3', NULL, '1990-01-01', 'Mea Culpa', 8);
+INSERT INTO public.tracks (id, duration_seconds, file_url, lyrics, release_date, title, album_id) VALUES (17, 714, '/uploads/tracks/cd28287f-ab61-4fbf-8c29-051a39d535b6.mp3', NULL, '1990-01-01', 'Principles of Lust', 8);
+INSERT INTO public.tracks (id, duration_seconds, file_url, lyrics, release_date, title, album_id) VALUES (20, 301, '/uploads/tracks/d5b0ce31-2503-4c9d-a3f6-d196fd25c4b6.mp3', NULL, '1990-01-01', 'The Voice and The Snake', 8);
+
+
+--
+-- Data for Name: playlists_tracks; Type: TABLE DATA; Schema: public; Owner: psqluser
+--
+
+INSERT INTO public.playlists_tracks (id, "position", playlist_id, track_id) VALUES (8, 4, 2, 1);
+INSERT INTO public.playlists_tracks (id, "position", playlist_id, track_id) VALUES (23, 2, 6, 15);
+INSERT INTO public.playlists_tracks (id, "position", playlist_id, track_id) VALUES (24, 1, 6, 14);
+INSERT INTO public.playlists_tracks (id, "position", playlist_id, track_id) VALUES (22, 0, 6, 11);
+INSERT INTO public.playlists_tracks (id, "position", playlist_id, track_id) VALUES (29, 0, 13, 21);
+INSERT INTO public.playlists_tracks (id, "position", playlist_id, track_id) VALUES (30, 1, 13, 18);
+INSERT INTO public.playlists_tracks (id, "position", playlist_id, track_id) VALUES (31, 0, 14, 22);
+
+
+--
+-- Data for Name: tracks_artists; Type: TABLE DATA; Schema: public; Owner: psqluser
+--
+
+INSERT INTO public.tracks_artists (track_id, artist_id) VALUES (15, 6);
+INSERT INTO public.tracks_artists (track_id, artist_id) VALUES (15, 7);
+INSERT INTO public.tracks_artists (track_id, artist_id) VALUES (14, 6);
+INSERT INTO public.tracks_artists (track_id, artist_id) VALUES (14, 7);
+INSERT INTO public.tracks_artists (track_id, artist_id) VALUES (13, 6);
+INSERT INTO public.tracks_artists (track_id, artist_id) VALUES (13, 7);
+INSERT INTO public.tracks_artists (track_id, artist_id) VALUES (12, 6);
+INSERT INTO public.tracks_artists (track_id, artist_id) VALUES (12, 7);
+INSERT INTO public.tracks_artists (track_id, artist_id) VALUES (23, 9);
+INSERT INTO public.tracks_artists (track_id, artist_id) VALUES (25, 9);
+INSERT INTO public.tracks_artists (track_id, artist_id) VALUES (24, 9);
+INSERT INTO public.tracks_artists (track_id, artist_id) VALUES (21, 8);
+INSERT INTO public.tracks_artists (track_id, artist_id) VALUES (18, 8);
+INSERT INTO public.tracks_artists (track_id, artist_id) VALUES (19, 8);
+INSERT INTO public.tracks_artists (track_id, artist_id) VALUES (17, 8);
+INSERT INTO public.tracks_artists (track_id, artist_id) VALUES (20, 8);
+INSERT INTO public.tracks_artists (track_id, artist_id) VALUES (22, 9);
+INSERT INTO public.tracks_artists (track_id, artist_id) VALUES (1, 10);
+INSERT INTO public.tracks_artists (track_id, artist_id) VALUES (16, 8);
+INSERT INTO public.tracks_artists (track_id, artist_id) VALUES (26, 10);
+INSERT INTO public.tracks_artists (track_id, artist_id) VALUES (11, 6);
+INSERT INTO public.tracks_artists (track_id, artist_id) VALUES (11, 7);
+
+
+--
+-- Data for Name: tracks_genres; Type: TABLE DATA; Schema: public; Owner: psqluser
+--
+
+INSERT INTO public.tracks_genres (track_id, genre_id) VALUES (17, 10);
+INSERT INTO public.tracks_genres (track_id, genre_id) VALUES (17, 11);
+INSERT INTO public.tracks_genres (track_id, genre_id) VALUES (20, 10);
+INSERT INTO public.tracks_genres (track_id, genre_id) VALUES (20, 11);
+INSERT INTO public.tracks_genres (track_id, genre_id) VALUES (26, 7);
+INSERT INTO public.tracks_genres (track_id, genre_id) VALUES (26, 1);
+INSERT INTO public.tracks_genres (track_id, genre_id) VALUES (11, 7);
+INSERT INTO public.tracks_genres (track_id, genre_id) VALUES (11, 8);
+INSERT INTO public.tracks_genres (track_id, genre_id) VALUES (11, 9);
+INSERT INTO public.tracks_genres (track_id, genre_id) VALUES (15, 7);
+INSERT INTO public.tracks_genres (track_id, genre_id) VALUES (15, 8);
+INSERT INTO public.tracks_genres (track_id, genre_id) VALUES (15, 9);
+INSERT INTO public.tracks_genres (track_id, genre_id) VALUES (22, 9);
+INSERT INTO public.tracks_genres (track_id, genre_id) VALUES (22, 10);
+INSERT INTO public.tracks_genres (track_id, genre_id) VALUES (22, 12);
+INSERT INTO public.tracks_genres (track_id, genre_id) VALUES (14, 7);
+INSERT INTO public.tracks_genres (track_id, genre_id) VALUES (14, 8);
+INSERT INTO public.tracks_genres (track_id, genre_id) VALUES (14, 9);
+INSERT INTO public.tracks_genres (track_id, genre_id) VALUES (13, 7);
+INSERT INTO public.tracks_genres (track_id, genre_id) VALUES (1, 7);
+INSERT INTO public.tracks_genres (track_id, genre_id) VALUES (16, 10);
+INSERT INTO public.tracks_genres (track_id, genre_id) VALUES (16, 11);
+INSERT INTO public.tracks_genres (track_id, genre_id) VALUES (13, 8);
+INSERT INTO public.tracks_genres (track_id, genre_id) VALUES (13, 9);
+INSERT INTO public.tracks_genres (track_id, genre_id) VALUES (12, 7);
+INSERT INTO public.tracks_genres (track_id, genre_id) VALUES (12, 8);
+INSERT INTO public.tracks_genres (track_id, genre_id) VALUES (12, 9);
+INSERT INTO public.tracks_genres (track_id, genre_id) VALUES (23, 1);
+INSERT INTO public.tracks_genres (track_id, genre_id) VALUES (23, 10);
+INSERT INTO public.tracks_genres (track_id, genre_id) VALUES (23, 12);
+INSERT INTO public.tracks_genres (track_id, genre_id) VALUES (25, 1);
+INSERT INTO public.tracks_genres (track_id, genre_id) VALUES (25, 10);
+INSERT INTO public.tracks_genres (track_id, genre_id) VALUES (25, 12);
+INSERT INTO public.tracks_genres (track_id, genre_id) VALUES (24, 1);
+INSERT INTO public.tracks_genres (track_id, genre_id) VALUES (24, 10);
+INSERT INTO public.tracks_genres (track_id, genre_id) VALUES (24, 12);
+INSERT INTO public.tracks_genres (track_id, genre_id) VALUES (21, 10);
+INSERT INTO public.tracks_genres (track_id, genre_id) VALUES (21, 11);
+INSERT INTO public.tracks_genres (track_id, genre_id) VALUES (18, 10);
+INSERT INTO public.tracks_genres (track_id, genre_id) VALUES (18, 11);
+INSERT INTO public.tracks_genres (track_id, genre_id) VALUES (19, 10);
+INSERT INTO public.tracks_genres (track_id, genre_id) VALUES (19, 11);
+
+
+--
+-- Name: albums_id_seq; Type: SEQUENCE SET; Schema: public; Owner: psqluser
+--
+
+SELECT pg_catalog.setval('public.albums_id_seq', 10, true);
+
+
+--
+-- Name: artists_id_seq; Type: SEQUENCE SET; Schema: public; Owner: psqluser
+--
+
+SELECT pg_catalog.setval('public.artists_id_seq', 10, true);
+
+
+--
+-- Name: genres_id_seq; Type: SEQUENCE SET; Schema: public; Owner: psqluser
+--
+
+SELECT pg_catalog.setval('public.genres_id_seq', 13, true);
+
+
+--
+-- Name: playlists_id_seq; Type: SEQUENCE SET; Schema: public; Owner: psqluser
+--
+
+SELECT pg_catalog.setval('public.playlists_id_seq', 14, true);
+
+
+--
+-- Name: playlists_tracks_id_seq; Type: SEQUENCE SET; Schema: public; Owner: psqluser
+--
+
+SELECT pg_catalog.setval('public.playlists_tracks_id_seq', 31, true);
+
+
+--
+-- Name: tracks_id_seq; Type: SEQUENCE SET; Schema: public; Owner: psqluser
+--
+
+SELECT pg_catalog.setval('public.tracks_id_seq', 26, true);
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: psqluser
+--
+
+SELECT pg_catalog.setval('public.users_id_seq', 9, true);
+
+
+--
+-- PostgreSQL database dump complete
+--
+
+\unrestrict CToiWMdJKcwRJ8NIWq3NHrE4sa2bvdaNCpze6Ma7XOnK7s14z1augP6va0Ynpjb
+
