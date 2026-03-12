@@ -83,45 +83,45 @@ export const ArtistListPage: React.FC = () => {
                     </thead>
                     <tbody>
                       {artists.map(artist => (
-                        <tr key={`artist-${artist.id}`}> {/* Добавили префикс для уникальности */}
-                          <td className="fw-medium">{artist.id}</td>
-                          <td>{artist.name}</td>
-                          <td className="text-end">
-                            {deleteConfirmId === artist.id ? (
-                              <div className="d-flex justify-content-end align-items-center">
-                                <span className="me-2 text-muted">Удалить?</span>
-                                <button
-                                  className="btn btn-sm btn-outline-success me-1"
-                                  onClick={() => handleDelete(artist.id)}
-                                >
-                                  <i className="bi bi-check-lg"></i>
-                                </button>
-                                <button
-                                  className="btn btn-sm btn-outline-secondary"
-                                  onClick={cancelDelete}
-                                >
-                                  <i className="bi bi-x-lg"></i>
-                                </button>
-                              </div>
-                            ) : (
-                              <div className="d-flex justify-content-end">
-                                <button
-                                  className="btn btn-sm btn-outline-primary me-1"
-                                  onClick={() => navigate(`/admin/artists/${artist.id}/edit`)}
-                                >
-                                  <i className="bi bi-pencil"></i>
-                                </button>
-                                <button
-                                  className="btn btn-sm btn-outline-danger"
-                                  onClick={() => confirmDelete(artist.id)}
-                                >
-                                  <i className="bi bi-trash"></i>
-                                </button>
-                              </div>
-                            )}
-                          </td>
-                        </tr>
-                      ))}
+                      <tr key={`artist-${artist.id}`}>
+                        <td className="fw-medium">{artist.id}</td>
+                        <td>{artist.name}</td>
+                        <td className="text-end">
+                          {deleteConfirmId === artist.id ? (
+                            <div className="d-flex justify-content-end align-items-center">
+                              <span className="me-2 text-muted">Удалить?</span>
+                              <button
+                                className="btn btn-sm btn-outline-success me-1"
+                                onClick={() => handleDelete(artist.id)}
+                              >
+                                <i className="bi bi-check-lg"></i>
+                              </button>
+                              <button
+                                className="btn btn-sm btn-outline-secondary"
+                                onClick={cancelDelete}
+                              >
+                                <i className="bi bi-x-lg"></i>
+                              </button>
+                            </div>
+                          ) : (
+                            <div className="d-flex justify-content-end">
+                              <button
+                                className="btn btn-sm btn-outline-primary me-1"
+                                onClick={() => navigate(`/admin/artists/${artist.id}/edit`)}
+                              >
+                                <i className="bi bi-pencil"></i>
+                              </button>
+                              <button
+                                className="btn btn-sm btn-outline-danger"
+                                onClick={() => confirmDelete(artist.id)}
+                              >
+                                <i className="bi bi-trash"></i>
+                              </button>
+                            </div>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
                     </tbody>
                   </table>
                 </div>

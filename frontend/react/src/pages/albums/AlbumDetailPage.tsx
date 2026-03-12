@@ -8,12 +8,14 @@ import { LoadingSpinner } from '@/components/common/LoadingSpinner';
 import { EmptyState } from '@/components/common/EmptyState';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNotification } from '@/contexts/NotificationContext';
+import { usePlayer } from '@/contexts/PlayerContext'; // Добавляем
 
 export const AlbumDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
   const { warning } = useNotification();
+  const player = usePlayer(); // Добавляем
 
   const [album, setAlbum] = useState<Album | null>(null);
   const [tracks, setTracks] = useState<Track[]>([]);
@@ -62,7 +64,7 @@ export const AlbumDetailPage: React.FC = () => {
       warning('Необходимо войти в систему');
       return;
     }
-    console.log('Play track:', track);
+    player.playTrack(track, tracks);
   };
 
   const handlePlayAll = () => {
@@ -71,7 +73,7 @@ export const AlbumDetailPage: React.FC = () => {
       return;
     }
     if (tracks.length > 0) {
-      handlePlayTrack(tracks[0]);
+      player.playTrack(tracks[0], tracks);
     }
   };
 
@@ -194,7 +196,11 @@ export const AlbumDetailPage: React.FC = () => {
                       style={{ width: '40px', height: '40px' }}
                       onClick={() => handlePlayTrack(track)}
                     >
-                      <i className="bi bi-play-fill"></i>
+                      <i className={`bi ${
+                        player.currentTrack?.id === track.id && player.isPlaying 
+                          ? 'bi-pause-fill' 
+                          : 'bi-play-fill'
+                      }`}></i>
                     </button>
 
                     {isAuthenticated && (

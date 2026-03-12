@@ -1,0 +1,189 @@
+.player-container {
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to bottom, #2c3e50, #1a252f);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 1050;
+  box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.2);
+  margin-top: auto;
+}
+
+.player-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1400px;
+  margin: 0 auto;
+  gap: 1.5rem;
+}
+
+.track-info {
+  flex: 0 0 200px;
+  min-width: 0;
+}
+
+.track-info .track-details {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.track-info .track-title {
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.track-info .track-artist {
+  font-size: 0.875rem;
+  opacity: 0.7;
+}
+
+.player-controls {
+  flex: 1;
+  max-width: 600px;
+}
+
+.control-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.control-buttons .play-button {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.control-buttons .play-button i {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.control-buttons .play-button:hover {
+  transform: scale(1.05);
+}
+
+.control-buttons .btn-link {
+  transition: opacity 0.2s;
+}
+
+.control-buttons .btn-link:hover:not(.disabled) {
+  opacity: 0.8;
+}
+
+.control-buttons .btn-link.disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.progress-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.875rem;
+}
+
+.progress-container .time-current,
+.progress-container .time-total {
+  min-width: 45px;
+  text-align: center;
+  opacity: 0.8;
+}
+
+.progress-container .progress-bar-wrapper {
+  flex: 1;
+  cursor: pointer;
+  padding: 0.5rem 0;
+}
+
+.progress-container .progress-bar-wrapper .progress {
+  height: 4px;
+  background-color: rgba(255, 255, 255, 0.2);
+  transition: height 0.2s;
+}
+
+.progress-container .progress-bar-wrapper .progress:hover {
+  height: 6px;
+}
+
+.progress-container .progress-bar-wrapper .progress .progress-bar {
+  background-color: #fff;
+  transition: width 0.1s linear;
+}
+
+.volume-control {
+  flex: 0 0 200px;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.volume-control .volume-slider-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.volume-control .volume-slider-container .volume-slider {
+  flex: 1;
+  height: 4px;
+}
+
+.volume-control .volume-slider-container .volume-slider::-webkit-slider-thumb {
+  background: white;
+}
+
+.volume-control .volume-slider-container .volume-slider::-moz-range-thumb {
+  background: white;
+}
+
+.volume-control .volume-slider-container .volume-percentage {
+  min-width: 45px;
+  font-size: 0.875rem;
+  opacity: 0.8;
+  text-align: right;
+}
+
+@media (max-width: 992px) {
+  .volume-control {
+    flex: 0 0 150px;
+  }
+}
+
+@media (max-width: 768px) {
+  .player-content {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  
+  .track-info {
+    flex: 0 0 100%;
+    order: 1;
+    text-align: center;
+  }
+  
+  .player-controls {
+    order: 2;
+    width: 100%;
+  }
+  
+  .volume-control {
+    order: 3;
+    flex: 0 0 100%;
+    justify-content: center;
+  }
+  
+  .volume-control .volume-slider-container {
+    max-width: 200px;
+  }
+}

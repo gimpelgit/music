@@ -81,7 +81,6 @@ export const ArtistFormPage: React.FC = () => {
     if (fieldError) setFieldError('');
   };
 
-  // Убрал LoadingSpinner
   return (
     <div className="container-fluid py-4">
       <div className="row justify-content-center">

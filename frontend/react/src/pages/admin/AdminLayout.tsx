@@ -1,10 +1,9 @@
 import React from 'react';
-import { Outlet, NavLink, useLocation } from 'react-router-dom';
+import { Outlet, NavLink } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 
 export const AdminLayout: React.FC = () => {
   const { user } = useAuth();
-  const location = useLocation();
 
   const menuItems = [
     { path: '/admin/users', icon: 'bi-people', label: 'Пользователи' },
@@ -13,10 +12,6 @@ export const AdminLayout: React.FC = () => {
     { path: '/admin/albums', icon: 'bi-disc', label: 'Альбомы' },
     { path: '/admin/tracks', icon: 'bi-music-note-beamed', label: 'Треки' },
   ];
-
-  const isActive = (path: string) => {
-    return location.pathname.startsWith(path);
-  };
 
   return (
     <div className="container-fluid py-4">

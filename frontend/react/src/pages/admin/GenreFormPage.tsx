@@ -81,7 +81,6 @@ export const GenreFormPage: React.FC = () => {
     if (fieldError) setFieldError('');
   };
 
-  // Убрал LoadingSpinner - теперь просто показываем форму сразу
   return (
     <div className="container-fluid py-4">
       <div className="row justify-content-center">

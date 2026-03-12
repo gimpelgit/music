@@ -1,6 +1,7 @@
 import React from 'react';
 import { Navbar } from './Navbar';
 import { Notifications } from './Notifications';
+import { Player } from '@/components/player/Player';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -14,6 +15,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
       <main className="flex-grow-1 overflow-auto">
         {children}
       </main>
+      <Player />
     </div>
   );
 };

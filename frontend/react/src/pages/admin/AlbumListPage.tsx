@@ -1,42 +1,44 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { adminGenreService } from '@/api/adminGenreService';
+import { adminAlbumService } from '@/api/adminAlbumService';
 import { useNotification } from '@/contexts/NotificationContext';
 import { LoadingSpinner } from '@/components/common/LoadingSpinner';
 import { EmptyState } from '@/components/common/EmptyState';
-import type { Genre } from '@/types/genre';
+import { getAlbumCoverUrl } from '@/types/album';
+import type { Album } from '@/types/album';
 
-export const GenreListPage: React.FC = () => {
-  const [genres, setGenres] = useState<Genre[]>([]);
+export const AlbumListPage: React.FC = () => {
+  const [albums, setAlbums] = useState<Album[]>([]);
   const [loading, setLoading] = useState(true);
   const [deleteConfirmId, setDeleteConfirmId] = useState<number | null>(null);
   const { success, error } = useNotification();
   const navigate = useNavigate();
 
-  const loadGenres = useCallback(async () => {
+  const loadAlbums = useCallback(async () => {
     setLoading(true);
     try {
-      const data = await adminGenreService.getAll();
-      setGenres(data);
+      const data = await adminAlbumService.getAll();
+      setAlbums(data);
     } catch (err) {
-      error('Ошибка при загрузке жанров');
+      error('Ошибка при загрузке альбомов');
     } finally {
       setLoading(false);
     }
   }, [error]);
 
   useEffect(() => {
-    loadGenres();
-  }, [loadGenres]);
+    loadAlbums();
+  }, [loadAlbums]);
 
   const handleDelete = async (id: number) => {
     try {
-      await adminGenreService.delete(id);
-      success('Жанр успешно удален');
-      await loadGenres();
+      await adminAlbumService.delete(id);
+      success('Альбом успешно удален');
+      await loadAlbums();
       setDeleteConfirmId(null);
-    } catch (err) {
-      error('Ошибка при удалении жанра');
+    } catch (err: any) {
+      const message = err.response?.data?.message || 'Ошибка при удалении альбома';
+      error(message);
     }
   };
 
@@ -58,18 +60,18 @@ export const GenreListPage: React.FC = () => {
         <div className="col-12">
           <div className="card shadow">
             <div className="card-header bg-white py-3 d-flex justify-content-between align-items-center">
-              <h3 className="h6 mb-0">Управление жанрами</h3>
-              <Link to="/admin/genres/new" className="btn btn-primary btn-sm">
+              <h3 className="h6 mb-0">Управление альбомами</h3>
+              <Link to="/admin/albums/new" className="btn btn-primary btn-sm">
                 <i className="bi bi-plus-lg me-1"></i>
-                Добавить жанр
+                Добавить альбом
               </Link>
             </div>
 
             <div className="card-body">
-              {genres.length === 0 ? (
+              {albums.length === 0 ? (
                 <EmptyState
-                  icon="bi-tags"
-                  message="Жанры не найдены"
+                  icon="bi-disc"
+                  message="Альбомы не найдены"
                 />
               ) : (
                 <div className="table-responsive">
@@ -77,22 +79,30 @@ export const GenreListPage: React.FC = () => {
                     <thead>
                       <tr>
                         <th>ID</th>
+                        <th>Обложка</th>
                         <th>Название</th>
                         <th className="text-end">Действия</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {genres.map(genre => (
-                        <tr key={`genre-${genre.id}`}>
-                          <td className="fw-medium">{genre.id}</td>
-                          <td>{genre.name}</td>
+                      {albums.map(album => (
+                        <tr key={`album-${album.id}`}>
+                          <td className="fw-medium">{album.id}</td>
+                          <td>
+                            <img 
+                              src={getAlbumCoverUrl(album)} 
+                              alt={album.title}
+                              style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '4px' }}
+                            />
+                          </td>
+                          <td>{album.title}</td>
                           <td className="text-end">
-                            {deleteConfirmId === genre.id ? (
+                            {deleteConfirmId === album.id ? (
                               <div className="d-flex justify-content-end align-items-center">
                                 <span className="me-2 text-muted">Удалить?</span>
                                 <button
                                   className="btn btn-sm btn-outline-success me-1"
-                                  onClick={() => handleDelete(genre.id)}
+                                  onClick={() => handleDelete(album.id)}
                                 >
                                   <i className="bi bi-check-lg"></i>
                                 </button>
@@ -107,13 +117,13 @@ export const GenreListPage: React.FC = () => {
                               <div className="d-flex justify-content-end">
                                 <button
                                   className="btn btn-sm btn-outline-primary me-1"
-                                  onClick={() => navigate(`/admin/genres/${genre.id}/edit`)}
+                                  onClick={() => navigate(`/admin/albums/${album.id}/edit`)}
                                 >
                                   <i className="bi bi-pencil"></i>
                                 </button>
                                 <button
                                   className="btn btn-sm btn-outline-danger"
-                                  onClick={() => confirmDelete(genre.id)}
+                                  onClick={() => confirmDelete(album.id)}
                                 >
                                   <i className="bi bi-trash"></i>
                                 </button>
