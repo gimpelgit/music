@@ -95,6 +95,13 @@ export class AlbumDetailComponent implements OnInit, OnDestroy {
     this.playerService.playTrack(track, this.tracks());
   }
 
+  playAll(): void {
+    const tracks = this.tracks();
+    if (tracks && tracks.length > 0) {
+      this.playerService.playTrack(tracks[0], tracks);
+    }
+  }
+
   openAddToPlaylistModal(track: Track): void {
     if (!this.authService.isAuthenticated()) {
       this.notificationService.warning('Необходимо войти в систему');

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PlayerService } from '../../../core/services/player.service';
@@ -10,20 +10,8 @@ import { PlayerService } from '../../../core/services/player.service';
   templateUrl: './player.component.html',
   styleUrls: ['./player.component.scss']
 })
-export class PlayerComponent implements OnInit, OnDestroy {
-  
-  isVolumeSliderVisible = false;
-  private hideVolumeTimeout: any;
-
+export class PlayerComponent {
   constructor(public playerService: PlayerService) {}
-
-  ngOnInit(): void {}
-
-  ngOnDestroy(): void {
-    if (this.hideVolumeTimeout) {
-      clearTimeout(this.hideVolumeTimeout);
-    }
-  }
 
   togglePlay(): void {
     this.playerService.togglePlay();
@@ -49,19 +37,6 @@ export class PlayerComponent implements OnInit, OnDestroy {
     return this.playerService.formatTime(seconds);
   }
 
-  showVolumeSlider(): void {
-    if (this.hideVolumeTimeout) {
-      clearTimeout(this.hideVolumeTimeout);
-    }
-    this.isVolumeSliderVisible = true;
-  }
-
-  hideVolumeSlider(): void {
-    this.hideVolumeTimeout = setTimeout(() => {
-      this.isVolumeSliderVisible = false;
-    }, 1000);
-  }
-
   onVolumeChange(event: Event): void {
     const input = event.target as HTMLInputElement;
     this.playerService.setVolume(Number.parseFloat(input.value));
@@ -73,5 +48,21 @@ export class PlayerComponent implements OnInit, OnDestroy {
 
   formatArtists(artists: { name: string }[]): string {
     return artists.map(a => a.name).join(', ');
+  }
+
+  getVolumeIcon(): string {
+    const { isMuted, volume } = this.playerService;
+    
+    if (isMuted() || volume() === 0) {
+      return 'bi-volume-mute-fill';
+    }
+    if (volume() > 0.5) {
+      return 'bi-volume-up-fill';
+    }
+    return 'bi-volume-down-fill';
+  }
+
+  getVolumePercentage(): number {
+    return Math.floor(this.playerService.volume() * 100);
   }
 }

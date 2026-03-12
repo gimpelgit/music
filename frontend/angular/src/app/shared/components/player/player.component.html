@@ -12,7 +12,7 @@
         <div class="control-buttons">
           <button 
             class="btn btn-link text-white p-2" 
-            [class.disabled]="!playerService.hasNext()"
+            [class.disabled]="!playerService.hasPrevious()"
             (click)="playPrevious()"
             [disabled]="!playerService.hasPrevious()">
             <i class="bi bi-skip-backward-fill fs-5"></i>
@@ -50,29 +50,22 @@
         </div>
       </div>
 
-      <div class="volume-control"
-           (mouseenter)="showVolumeSlider()"
-           (mouseleave)="hideVolumeSlider()">
+      <div class="volume-control">
         <button class="btn btn-link text-white p-2" (click)="toggleMute()">
-          <i class="bi" 
-             [class.bi-volume-up-fill]="!playerService.isMuted() && playerService.volume() > 0.5"
-             [class.bi-volume-down-fill]="!playerService.isMuted() && playerService.volume() <= 0.5 && playerService.volume() > 0"
-             [class.bi-volume-mute-fill]="playerService.isMuted() || playerService.volume() === 0">
-          </i>
+          <i class="bi" [class]="getVolumeIcon()"></i>
         </button>
         
-        @if (isVolumeSliderVisible) {
-          <div class="volume-slider-container">
-            <input 
-              type="range" 
-              class="form-range volume-slider" 
-              [value]="playerService.volume()"
-              min="0" 
-              max="1" 
-              step="0.01"
-              (input)="onVolumeChange($event)">
-          </div>
-        }
+        <div class="volume-slider-container">
+          <input 
+            type="range" 
+            class="form-range volume-slider" 
+            [value]="playerService.volume()"
+            min="0" 
+            max="1" 
+            step="0.01"
+            (input)="onVolumeChange($event)">
+          <span class="volume-percentage">{{ getVolumePercentage() }}%</span>
+        </div>
       </div>
     </div>
   </div>
