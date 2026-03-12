@@ -11,7 +11,7 @@ export class AuthService {
   private readonly TOKEN_KEY = 'auth_token';
   private readonly USER_KEY = 'auth_user';
   
-  private state = signal<AuthState>({
+  private readonly state = signal<AuthState>({
     user: null,
     token: null,
     isAuthenticated: false,
@@ -19,23 +19,18 @@ export class AuthService {
     error: null
   });
 
-  // Публичные вычисляемые сигналы
   readonly user = computed(() => this.state().user);
   readonly token = computed(() => this.state().token);
   readonly isAuthenticated = computed(() => this.state().isAuthenticated);
   readonly loading = computed(() => this.state().loading);
   readonly error = computed(() => this.state().error);
   
-  // Роли
   readonly isAdmin = computed(() => this.state().user?.role === 'ROLE_ADMIN');
 
   constructor(private readonly http: HttpClient) {
     this.loadStoredAuth();
   }
 
-  /**
-   * Загрузка сохраненной аутентификации из localStorage
-   */
   private loadStoredAuth(): void {
     const token = localStorage.getItem(this.TOKEN_KEY);
     const userStr = localStorage.getItem(this.USER_KEY);
@@ -56,9 +51,6 @@ export class AuthService {
     }
   }
 
-  /**
-   * Регистрация нового пользователя
-   */
   register(data: RegisterRequest): Observable<AuthResponse> {
     this.state.update(state => ({ ...state, loading: true, error: null }));
 
@@ -76,9 +68,6 @@ export class AuthService {
       );
   }
 
-  /**
-   * Вход в систему
-   */
   login(data: LoginRequest): Observable<AuthResponse> {
     this.state.update(state => ({ ...state, loading: true, error: null }));
 
@@ -96,9 +85,6 @@ export class AuthService {
       );
   }
 
-  /**
-   * Выход из системы
-   */
   logout(): Observable<any> {
     this.state.update(state => ({ ...state, loading: true }));
 
@@ -106,21 +92,16 @@ export class AuthService {
       .pipe(
         tap(() => this.clearAuth()),
         catchError(error => {
-          // Даже если ошибка, очищаем локальные данные
           this.clearAuth();
           return throwError(() => error);
         })
       );
   }
 
-  /**
-   * Обработка успешного ответа аутентификации
-   */
+
   private handleAuthResponse(response: AuthResponse): void {
-    // Сохраняем токен
     localStorage.setItem(this.TOKEN_KEY, response.token);
     
-    // Декодируем токен для получения информации о пользователе
     const user = this.decodeToken(response.token);
     
     if (user) {

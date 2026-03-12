@@ -1,13 +1,13 @@
 import axios, { type AxiosInstance, type InternalAxiosRequestConfig, AxiosError } from 'axios';
+import { API_CONFIG } from '@/config/api';
 
-export const API_BASE_URL = 'http://localhost:8080/api';
 
 class ApiClient {
   private readonly client: AxiosInstance;
 
   constructor() {
     this.client = axios.create({
-      baseURL: API_BASE_URL,
+      baseURL: API_CONFIG.API_URL,
       headers: {
         'Content-Type': 'application/json',
       },

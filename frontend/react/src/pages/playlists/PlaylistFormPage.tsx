@@ -1,27 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { adminAlbumService } from '@/api/services/adminAlbumService';
+import { playlistService } from '@/api/services/playlistService';
 import { useNotification } from '@/contexts/NotificationContext';
-import { getAlbumCoverUrl } from '@/types/album';
-import type { Album } from '@/types/album';
+import { useAuth } from '@/contexts/AuthContext';
+import { getPlaylistCoverUrl } from '@/types/playlist';
 
-export const AlbumFormPage: React.FC = () => {
+export const PlaylistFormPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { success, error: showError, warning } = useNotification();
+  const { user } = useAuth();
 
-  const [album, setAlbum] = useState<Partial<Album>>({ title: '' });
+  const [playlistName, setPlaylistName] = useState('');
+  const [isPublic, setIsPublic] = useState(true);
   const [coverImageFile, setCoverImageFile] = useState<File | null>(null);
   const [coverImagePreview, setCoverImagePreview] = useState<string | null>(null);
   const [existingCoverUrl, setExistingCoverUrl] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
-  const [fieldError, setFieldError] = useState('');
 
   const isEditing = Boolean(id);
 
   useEffect(() => {
     if (id) {
-      loadAlbum(Number(id));
+      loadPlaylist(Number(id));
     }
   }, [id]);
 
@@ -37,40 +38,26 @@ export const AlbumFormPage: React.FC = () => {
     }
   }, [coverImageFile]);
 
-  const loadAlbum = async (albumId: number) => {
+  const loadPlaylist = async (playlistId: number) => {
     try {
-      const data = await adminAlbumService.getById(albumId);
-      setAlbum(data);
+      const data = await playlistService.getById(playlistId);
+      
+      if (user && data.userId !== user.id) {
+        showError('У вас нет прав для редактирования этого плейлиста');
+        navigate('/playlists');
+        return;
+      }
+
+      setPlaylistName(data.name);
+      setIsPublic(data.isPublic);
+      
       if (data.coverImageUrl) {
-        setExistingCoverUrl(getAlbumCoverUrl(data));
+        setExistingCoverUrl(getPlaylistCoverUrl(data));
       }
     } catch (err) {
-      showError('Ошибка при загрузке альбома');
-      navigate('/admin/albums');
+      showError('Ошибка при загрузке плейлиста');
+      navigate('/playlists');
     }
-  };
-
-  const validateForm = (): boolean => {
-    if (!album.title?.trim()) {
-      setFieldError('Название альбома обязательно');
-      return false;
-    }
-    if (album.title.length < 2) {
-      setFieldError('Минимальная длина 2 символа');
-      return false;
-    }
-    if (album.title.length > 200) {
-      setFieldError('Максимальная длина 200 символов');
-      return false;
-    }
-    setFieldError('');
-    return true;
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    setAlbum(prev => ({ ...prev, title: value }));
-    if (fieldError) setFieldError('');
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -98,34 +85,47 @@ export const AlbumFormPage: React.FC = () => {
     setExistingCoverUrl(null);
   };
 
+  const validateForm = (): boolean => {
+    if (!playlistName.trim()) {
+      warning('Введите название плейлиста');
+      return false;
+    }
+    if (playlistName.length < 2) {
+      warning('Название должно содержать минимум 2 символа');
+      return false;
+    }
+    return true;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!validateForm()) {
-      warning('Проверьте правильность заполнения формы');
       return;
     }
 
     setSubmitting(true);
     try {
       const formData = new FormData();
-      formData.append('title', album.title!.trim());
+      formData.append('name', playlistName.trim());
+      formData.append('isPublic', String(isPublic));
 
       if (coverImageFile) {
         formData.append('coverImage', coverImageFile);
       }
 
       if (isEditing && id) {
-        await adminAlbumService.update(Number(id), formData);
-        success('Альбом успешно обновлен');
+        await playlistService.update(Number(id), formData);
+        success('Плейлист обновлен');
       } else {
-        await adminAlbumService.create(formData);
-        success('Альбом успешно создан');
+        await playlistService.create(formData);
+        success('Плейлист создан');
       }
-      navigate('/admin/albums');
+
+      navigate('/playlists');
     } catch (err: any) {
       const message = err.response?.data?.message || 
-        (isEditing ? 'Ошибка при обновлении альбома' : 'Ошибка при создании альбома');
+        (isEditing ? 'Ошибка при обновлении плейлиста' : 'Ошибка при создании плейлиста');
       showError(message);
     } finally {
       setSubmitting(false);
@@ -134,16 +134,16 @@ export const AlbumFormPage: React.FC = () => {
 
 
   return (
-    <div className="container-fluid py-4">
+    <div className="container py-4">
       <div className="row justify-content-center">
         <div className="col-md-8 col-lg-6">
-          <div className="card shadow">
+          <div className="card shadow-sm">
             <div className="card-header bg-white py-3">
               <nav aria-label="breadcrumb">
                 <ol className="breadcrumb mb-0">
                   <li className="breadcrumb-item">
-                    <Link to="/admin/albums" className="text-decoration-none">
-                      Альбомы
+                    <Link to="/playlists" className="text-decoration-none">
+                      Плейлисты
                     </Link>
                   </li>
                   <li className="breadcrumb-item active" aria-current="page">
@@ -156,26 +156,43 @@ export const AlbumFormPage: React.FC = () => {
             <div className="card-body">
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
-                  <label htmlFor="title" className="form-label fw-semibold">
-                    Название альбома <span className="text-danger">*</span>
+                  <label htmlFor="name" className="form-label fw-semibold">
+                    Название плейлиста <span className="text-danger">*</span>
                   </label>
                   <input
                     type="text"
-                    className={`form-control ${fieldError ? 'is-invalid' : ''}`}
-                    id="title"
-                    name="title"
-                    value={album.title}
-                    onChange={handleChange}
-                    placeholder="Введите название альбома"
+                    className="form-control"
+                    id="name"
+                    value={playlistName}
+                    onChange={(e) => setPlaylistName(e.target.value)}
+                    placeholder="Введите название плейлиста"
+                    required
+                    minLength={2}
                     disabled={submitting}
                   />
-                  {fieldError && (
-                    <div className="invalid-feedback">{fieldError}</div>
-                  )}
                 </div>
 
                 <div className="mb-3">
-                  <label htmlFor="coverImage" className="form-label fw-semibold">Обложка альбома</label>
+                  <div className="form-check form-switch">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      id="isPublic"
+                      checked={isPublic}
+                      onChange={(e) => setIsPublic(e.target.checked)}
+                      disabled={submitting}
+                    />
+                    <label className="form-check-label" htmlFor="isPublic">
+                      Публичный плейлист
+                    </label>
+                  </div>
+                  <div className="form-text text-muted small">
+                    Публичные плейлисты видны всем пользователям
+                  </div>
+                </div>
+
+                <div className="mb-3">
+                  <label htmlFor="coverImage" className="form-label fw-semibold">Обложка плейлиста</label>
                   
                   {(existingCoverUrl || coverImagePreview) && (
                     <div className="mb-2">
@@ -198,6 +215,7 @@ export const AlbumFormPage: React.FC = () => {
                           type="button" 
                           className="btn btn-sm btn-outline-danger"
                           onClick={removeCoverImage}
+                          disabled={submitting}
                         >
                           <i className="bi bi-x-lg"></i>
                         </button>
@@ -211,6 +229,7 @@ export const AlbumFormPage: React.FC = () => {
                     id="coverImage"
                     accept=".jpg,.jpeg,.png,.gif,image/jpeg,image/png,image/gif"
                     onChange={handleFileChange}
+                    disabled={submitting}
                   />
                   
                   <div className="form-text text-muted small">
@@ -240,7 +259,7 @@ export const AlbumFormPage: React.FC = () => {
                   <button
                     type="button"
                     className="btn btn-outline-secondary"
-                    onClick={() => navigate('/admin/albums')}
+                    onClick={() => navigate('/playlists')}
                     disabled={submitting}
                   >
                     <i className="bi bi-x-lg me-2"></i>

@@ -90,6 +90,7 @@ public class UserService {
 
   @Transactional
   public UserDto updateUser(Long id, UpdateUserRequest request) {
+    User currentUser = getCurrentUser();
     User user = userRepository.findById(id)
       .orElseThrow(() -> new UserNotFoundException(id));
 
@@ -102,7 +103,7 @@ public class UserService {
       user.setUsername(request.getUsername());
     }
 
-    if (request.getRole() != null && isAdmin()) {
+    if (request.getRole() != null && currentUser.getRole() == Role.ROLE_ADMIN) {
       if (!Role.isValid(request.getRole())) {
         throw new RoleNotFoundException(request.getRole());
       }

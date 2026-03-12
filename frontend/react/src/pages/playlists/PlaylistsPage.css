@@ -1,0 +1,11 @@
+.playlist-cover-btn {
+  transition: all 0.2s ease;
+}
+
+.playlist-cover-btn.selected {
+  box-shadow: 0 0 0 2px #0d6efd;
+}
+
+.playlist-cover-btn:hover {
+  transform: scale(1.05);
+}

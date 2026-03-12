@@ -1,5 +1,6 @@
 import { type Track } from '@/types/track';
 import { type PlayerState } from '@/types/player';
+import { getFullUrl } from '@/config/api';
 
 class PlayerServiceClass {
   private audioElement: HTMLAudioElement | null = null;
@@ -61,10 +62,7 @@ class PlayerServiceClass {
   }
 
   private getFullTrackUrl(fileUrl: string): string {
-    if (fileUrl.startsWith('http')) {
-      return fileUrl;
-    }
-    return `http://localhost:8080${fileUrl}`;
+    return getFullUrl(fileUrl);
   }
 
   private notifyListeners(): void {

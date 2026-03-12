@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { adminGenreService } from '@/api/adminGenreService';
+import { adminGenreService } from '@/api/services/adminGenreService';
 import { useNotification } from '@/contexts/NotificationContext';
 import { LoadingSpinner } from '@/components/common/LoadingSpinner';
 import { EmptyState } from '@/components/common/EmptyState';

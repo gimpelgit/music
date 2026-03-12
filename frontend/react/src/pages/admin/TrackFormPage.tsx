@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { adminTrackService } from '@/api/adminTrackService';
-import { adminArtistService } from '@/api/adminArtistService';
-import { adminGenreService } from '@/api/adminGenreService';
-import { adminAlbumService } from '@/api/adminAlbumService';
+import { adminTrackService } from '@/api/services/adminTrackService';
+import { adminArtistService } from '@/api/services/adminArtistService';
+import { adminGenreService } from '@/api/services/adminGenreService';
+import { adminAlbumService } from '@/api/services/adminAlbumService';
 import { useNotification } from '@/contexts/NotificationContext';
 import type { Artist } from '@/types/artist';
 import type { Genre } from '@/types/genre';

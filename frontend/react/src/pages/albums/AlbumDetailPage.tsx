@@ -1,25 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { albumService } from '@/api/albumService';
-import { trackService } from '@/api/trackService';
+import { albumService } from '@/api/services/albumService';
+import { trackService } from '@/api/services/trackService';
+import { playlistService } from '@/api/services/playlistService';
 import { type Album, getAlbumCoverUrl } from '@/types/album';
 import { type Track } from '@/types/track';
 import { LoadingSpinner } from '@/components/common/LoadingSpinner';
 import { EmptyState } from '@/components/common/EmptyState';
+import { AddToPlaylistModal } from '@/components/playlist/AddToPlaylistModal';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNotification } from '@/contexts/NotificationContext';
-import { usePlayer } from '@/contexts/PlayerContext'; // Добавляем
+import { usePlayer } from '@/contexts/PlayerContext';
 
 export const AlbumDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
-  const { warning } = useNotification();
-  const player = usePlayer(); // Добавляем
+  const { success, warning } = useNotification();
+  const player = usePlayer();
 
   const [album, setAlbum] = useState<Album | null>(null);
   const [tracks, setTracks] = useState<Track[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showPlaylistModal, setShowPlaylistModal] = useState(false);
+  const [selectedTrack, setSelectedTrack] = useState<Track | null>(null);
 
   useEffect(() => {
     const loadAlbumData = async () => {
@@ -77,12 +81,26 @@ export const AlbumDetailPage: React.FC = () => {
     }
   };
 
-  const handleAddToPlaylist = (track: Track) => {
+  const handleOpenAddToPlaylist = (track: Track) => {
     if (!isAuthenticated) {
       warning('Необходимо войти в систему');
       return;
     }
-    console.log('Add to playlist:', track);
+    setSelectedTrack(track);
+    setShowPlaylistModal(true);
+  };
+
+  const handleAddToPlaylist = async (playlistId: number) => {
+    if (!selectedTrack) return;
+
+    try {
+      await playlistService.addTrack(playlistId, selectedTrack.id);
+      success('Трек добавлен в плейлист');
+      setShowPlaylistModal(false);
+      setSelectedTrack(null);
+    } catch (err) {
+      warning('Ошибка при добавлении трека в плейлист');
+    }
   };
 
   if (loading) {
@@ -100,7 +118,6 @@ export const AlbumDetailPage: React.FC = () => {
 
   return (
     <div className="container py-4">
-      {/* Хлебные крошки */}
       <nav aria-label="breadcrumb" className="mb-4">
         <ol className="breadcrumb">
           <li className="breadcrumb-item">
@@ -114,7 +131,6 @@ export const AlbumDetailPage: React.FC = () => {
         </ol>
       </nav>
 
-      {/* Информация об альбоме */}
       <div className="row g-4 mb-5">
         <div className="col-md-3">
           <div className="card shadow-sm">
@@ -145,7 +161,6 @@ export const AlbumDetailPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Список треков */}
       <div className="card shadow-sm">
         <div className="card-header bg-white py-3">
           <h2 className="h5 mb-0">Треки альбома</h2>
@@ -207,7 +222,7 @@ export const AlbumDetailPage: React.FC = () => {
                       <button
                         className="btn btn-sm btn-outline-success rounded-circle"
                         style={{ width: '40px', height: '40px' }}
-                        onClick={() => handleAddToPlaylist(track)}
+                        onClick={() => handleOpenAddToPlaylist(track)}
                       >
                         <i className="bi bi-plus-lg"></i>
                       </button>
@@ -219,6 +234,17 @@ export const AlbumDetailPage: React.FC = () => {
           )}
         </div>
       </div>
+
+      {showPlaylistModal && selectedTrack && (
+        <AddToPlaylistModal
+          track={selectedTrack}
+          onClose={() => {
+            setShowPlaylistModal(false);
+            setSelectedTrack(null);
+          }}
+          onAddToPlaylist={handleAddToPlaylist}
+        />
+      )}
     </div>
   );
 };

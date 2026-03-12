@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { adminArtistService } from '@/api/adminArtistService';
+import { adminArtistService } from '@/api/services/adminArtistService';
 import { useNotification } from '@/contexts/NotificationContext';
 import { LoadingSpinner } from '@/components/common/LoadingSpinner';
 import { EmptyState } from '@/components/common/EmptyState';

@@ -141,6 +141,14 @@ public class GlobalExceptionHandler {
     );
   }
 
+  @ExceptionHandler(UnauthorizedException.class)
+  public ResponseEntity<ErrorResponse> handleUnauthorized(UnauthorizedException ex) {
+    return new ResponseEntity<>(
+      new ErrorResponse(ex.getMessage()),
+      HttpStatus.UNAUTHORIZED
+    );
+  }
+
   @ExceptionHandler(IllegalArgumentException.class)
   public ResponseEntity<ErrorResponse> handleIllegalArgument(IllegalArgumentException ex) {
     return new ResponseEntity<>(

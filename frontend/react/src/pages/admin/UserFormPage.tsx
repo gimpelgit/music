@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { adminUserService } from '@/api/adminUserService';
+import { adminUserService } from '@/api/services/adminUserService';
 import { useNotification } from '@/contexts/NotificationContext';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -134,7 +134,7 @@ export const UserFormPage: React.FC = () => {
         
         if (isEditingCurrentUser) {
           warning('Ваши данные изменены. Пожалуйста, войдите снова.');
-          await logout();
+          await logout();   // Токен станет невалидным и выбросится исключение 401
           navigate('/login');
         } else {
           navigate('/admin/users');
@@ -150,9 +150,11 @@ export const UserFormPage: React.FC = () => {
         navigate('/admin/users');
       }
     } catch (err: any) {
-      const message = err.response?.data?.message || 
-        (isEditing ? 'Ошибка при обновлении пользователя' : 'Ошибка при создании пользователя');
-      showError(message);
+      if (err.response?.status != 401) {
+        const message = err.response?.data?.message || 
+          (isEditing ? 'Ошибка при обновлении пользователя' : 'Ошибка при создании пользователя');
+        showError(message);
+      }
     } finally {
       setSubmitting(false);
     }

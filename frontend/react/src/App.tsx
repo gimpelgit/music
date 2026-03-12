@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import { NotificationProvider } from './contexts/NotificationContext';
-import { PlayerProvider } from './contexts/PlayerContext'; // Добавляем
+import { PlayerProvider } from './contexts/PlayerContext';
 import { Layout } from './components/layout/Layout';
 import { ProtectedRoute } from './components/guards/ProtectedRoute';
 import { PublicRoute } from './components/guards/PublicRoute';
@@ -9,6 +9,10 @@ import { LoginPage } from './pages/auth/LoginPage';
 import { RegisterPage } from './pages/auth/RegisterPage';
 import { AlbumsPage } from './pages/albums/AlbumsPage';
 import { AlbumDetailPage } from './pages/albums/AlbumDetailPage';
+import { PublicPlaylistsPage } from './pages/playlists/PublicPlaylistsPage';
+import { PlaylistsPage } from './pages/playlists/PlaylistsPage';
+import { PlaylistDetailPage } from './pages/playlists/PlaylistDetailPage';
+import { PlaylistFormPage } from './pages/playlists/PlaylistFormPage';
 import { AdminLayout } from './pages/admin/AdminLayout';
 import { GenreListPage } from './pages/admin/GenreListPage';
 import { GenreFormPage } from './pages/admin/GenreFormPage';
@@ -20,24 +24,17 @@ import { AlbumListPage } from './pages/admin/AlbumListPage';
 import { AlbumFormPage } from './pages/admin/AlbumFormPage';
 import { TrackListPage } from './pages/admin/TrackListPage';
 import { TrackFormPage } from './pages/admin/TrackFormPage';
-
+import { ProfilePage } from './pages/profile/ProfilePage';
 import './main.css';
-
-const ProfilePage = () => <div>Profile Page</div>;
-const PlaylistsPage = () => <div>Playlists Page</div>;
-const PlaylistDetailPage = () => <div>Playlist Detail Page</div>;
-const PlaylistFormPage = () => <div>Playlist Form Page</div>;
-const PublicPlaylistsPage = () => <div>Public Playlists Page</div>;
 
 function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
         <NotificationProvider>
-          <PlayerProvider> {/* Добавляем PlayerProvider */}
+          <PlayerProvider>
             <Layout>
               <Routes>
-                {/* Public routes */}
                 <Route path="/login" element={
                   <PublicRoute>
                     <LoginPage />
@@ -49,7 +46,6 @@ function App() {
                   </PublicRoute>
                 } />
 
-                {/* Protected routes */}
                 <Route path="/albums" element={
                   <ProtectedRoute>
                     <AlbumsPage />
@@ -117,7 +113,6 @@ function App() {
                 </Route>
 
                 <Route path="/" element={<Navigate to="/albums" replace />} />
-                <Route path="*" element={<Navigate to="/albums" replace />} />
               </Routes>
             </Layout>
           </PlayerProvider>

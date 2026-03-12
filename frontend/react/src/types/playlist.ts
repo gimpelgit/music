@@ -1,4 +1,5 @@
 import type { Track } from './track';
+import { getUploadUrl } from '@/config/api';
 
 export interface Playlist {
   id: number;
@@ -22,17 +23,10 @@ export interface PlaylistUpdateRequest {
   trackIds?: number[];
 }
 
+export interface UpdatePositionRequest {
+  position: number;
+}
+
 export function getPlaylistCoverUrl(playlist: Playlist | null): string {
-  if (!playlist) {
-    return 'http://localhost:8080/uploads/playlists/default.jpeg';
-  }
-  
-  if (playlist.coverImageUrl) {
-    if (playlist.coverImageUrl.startsWith('http')) {
-      return playlist.coverImageUrl;
-    }
-    return 'http://localhost:8080' + playlist.coverImageUrl;
-  }
-  
-  return 'http://localhost:8080/uploads/playlists/default.jpeg';
+  return getUploadUrl('playlists', playlist?.coverImageUrl);
 }

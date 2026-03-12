@@ -1,3 +1,5 @@
+import { getUploadUrl } from '@/config/api';
+
 export interface Album {
   id: number;
   title: string;
@@ -22,16 +24,5 @@ export interface PageResponse<T> {
 }
 
 export function getAlbumCoverUrl(album: Album | null): string {
-  if (!album) {
-    return 'http://localhost:8080/uploads/albums/default.jpeg';
-  }
-  
-  if (album.coverImageUrl) {
-    if (album.coverImageUrl.startsWith('http')) {
-      return album.coverImageUrl;
-    }
-    return 'http://localhost:8080' + album.coverImageUrl;
-  }
-  
-  return 'http://localhost:8080/uploads/albums/default.jpeg';
+  return getUploadUrl('albums', album?.coverImageUrl);
 }
