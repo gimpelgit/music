@@ -6,16 +6,22 @@ import { ProtectedRoute } from './components/guards/ProtectedRoute';
 import { PublicRoute } from './components/guards/PublicRoute';
 import { LoginPage } from './pages/auth/LoginPage';
 import { RegisterPage } from './pages/auth/RegisterPage';
+import { AlbumsPage } from './pages/albums/AlbumsPage';
+import { AlbumDetailPage } from './pages/albums/AlbumDetailPage';
+import { AdminLayout } from './pages/admin/AdminLayout';
+import { GenreListPage } from './pages/admin/GenreListPage';
+import { GenreFormPage } from './pages/admin/GenreFormPage';
+import { ArtistListPage } from './pages/admin/ArtistListPage';
+import { ArtistFormPage } from './pages/admin/ArtistFormPage';
+
 import './styles/main.css';
 
-const AlbumsPage = () => <div>Albums Page</div>;
-const AlbumDetailPage = () => <div>Album Detail Page</div>;
+
 const ProfilePage = () => <div>Profile Page</div>;
 const PlaylistsPage = () => <div>Playlists Page</div>;
 const PlaylistDetailPage = () => <div>Playlist Detail Page</div>;
 const PlaylistFormPage = () => <div>Playlist Form Page</div>;
 const PublicPlaylistsPage = () => <div>Public Playlists Page</div>;
-const AdminPage = () => <div>Admin Page</div>;
 
 function App() {
   return (
@@ -80,11 +86,19 @@ function App() {
                 </ProtectedRoute>
               } />
 
-              <Route path="/admin/*" element={
+              <Route path="/admin" element={
                 <ProtectedRoute requiredRole="ROLE_ADMIN">
-                  <AdminPage />
+                  <AdminLayout />
                 </ProtectedRoute>
-              } />
+              }>
+                <Route index element={<Navigate to="genres" replace />} />
+                <Route path="genres" element={<GenreListPage />} />
+                <Route path="genres/new" element={<GenreFormPage />} />
+                <Route path="genres/:id/edit" element={<GenreFormPage />} />
+                <Route path="artists" element={<ArtistListPage />} />
+                <Route path="artists/new" element={<ArtistFormPage />} />
+                <Route path="artists/:id/edit" element={<ArtistFormPage />} />
+              </Route>
 
               <Route path="/" element={<Navigate to="/albums" replace />} />
               <Route path="*" element={<Navigate to="/albums" replace />} />

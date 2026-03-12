@@ -66,3 +66,47 @@ body {
 .aspect-ratio-1x1 {
   aspect-ratio: 1/1;
 }
+
+/* Admin styles */
+.list-group-item {
+  border: none;
+  border-bottom: 1px solid rgba(0,0,0,0.125);
+}
+
+.list-group-item:last-child {
+  border-bottom: none;
+}
+
+.list-group-item.active {
+  background-color: #0d6efd;
+  color: white;
+}
+
+.list-group-item.active i {
+  color: white;
+}
+
+/* Table styles */
+.table td, .table th {
+  vertical-align: middle;
+}
+
+/* Breadcrumb styles */
+.breadcrumb {
+  background-color: transparent;
+  padding: 0;
+  margin: 0;
+}
+
+.breadcrumb-item a {
+  color: #0d6efd;
+  text-decoration: none;
+}
+
+.breadcrumb-item a:hover {
+  text-decoration: underline;
+}
+
+.breadcrumb-item.active {
+  color: #6c757d;
+}

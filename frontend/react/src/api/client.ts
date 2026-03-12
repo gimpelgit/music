@@ -1,6 +1,6 @@
 import axios, { type AxiosInstance, type InternalAxiosRequestConfig, AxiosError } from 'axios';
 
-const API_BASE_URL = 'http://localhost:8080/api';
+export const API_BASE_URL = 'http://localhost:8080/api';
 
 class ApiClient {
   private readonly client: AxiosInstance;

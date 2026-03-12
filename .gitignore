@@ -8,5 +8,6 @@ node_modules/
 
 docs.md
 help.md
-code.md
+code-angular.md
+code-react.md
 script.py

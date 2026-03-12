@@ -1,0 +1,14 @@
+.album-card {
+  transition: transform 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.album-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+.card-title {
+  font-size: 1rem;
+  margin-bottom: 0;
+}
