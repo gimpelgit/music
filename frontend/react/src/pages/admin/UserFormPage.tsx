@@ -69,12 +69,12 @@ export const UserFormPage: React.FC = () => {
       case 'name':
         if (!value) return 'Имя обязательно';
         if (value.length < 2) return 'Минимальная длина 2 символа';
-        if (value.length > 100) return 'Максимальная длина 100 символов';
+        if (value.length > 30) return 'Максимальная длина 30 символов';
         return '';
       case 'username':
         if (!value) return 'Логин обязателен';
-        if (value.length < 3) return 'Минимальная длина 3 символа';
-        if (value.length > 50) return 'Максимальная длина 50 символов';
+        if (value.length < 2) return 'Минимальная длина 2 символа';
+        if (value.length > 30) return 'Максимальная длина 30 символов';
         return '';
       case 'password':
         if (!isEditing && !value) return 'Пароль обязателен';
@@ -134,7 +134,7 @@ export const UserFormPage: React.FC = () => {
         
         if (isEditingCurrentUser) {
           warning('Ваши данные изменены. Пожалуйста, войдите снова.');
-          await logout();   // Токен станет невалидным и выбросится исключение 401
+          await logout();   // Токен станет невалидным и вернется код ошибки 401
           navigate('/login');
         } else {
           navigate('/admin/users');

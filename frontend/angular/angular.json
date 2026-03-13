@@ -9,22 +9,62 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
-            "outputPath": "dist/angular",
+            "outputPath": {
+              "base": "dist/angular"
+            },
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.json",
-            "styles": [
-              "src/styles.scss"
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "public"
+              }
             ],
+            "styles": ["src/styles.scss"],
             "scripts": []
-          }
+          },
+          "configurations": {
+            "production": {
+              "outputHashing": "all",
+              "optimization": true,
+              "extractLicenses": true,
+              "sourceMap": false,
+              "namedChunks": false,
+              "aot": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true,
+              "buildOptimizer": false
+            }
+          },
+          "defaultConfiguration": "development"
         },
         "serve": {
           "builder": "@angular/build:dev-server",
           "options": {
             "buildTarget": "angular:build"
-          }
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "angular:build:production"
+            },
+            "development": {
+              "buildTarget": "angular:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
         }
       }
     }

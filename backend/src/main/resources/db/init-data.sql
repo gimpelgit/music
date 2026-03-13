@@ -2,22 +2,8 @@
 -- PostgreSQL database dump
 --
 
-\restrict hy8SXk3sFr2qKbCbpm5qxAgXWzfUAUHlzYnvT7Q6pm8WeuaNBqk5kaFFlQsQf1t
-
 -- Dumped from database version 18.2 (Ubuntu 18.2-1.pgdg24.04+1)
 -- Dumped by pg_dump version 18.2 (Ubuntu 18.2-1.pgdg24.04+1)
-
-SET statement_timeout = 0;
-SET lock_timeout = 0;
-SET idle_in_transaction_session_timeout = 0;
-SET transaction_timeout = 0;
-SET client_encoding = 'UTF8';
-SET standard_conforming_strings = on;
-SELECT pg_catalog.set_config('search_path', '', false);
-SET check_function_bodies = false;
-SET xmloption = content;
-SET client_min_messages = warning;
-SET row_security = off;
 
 --
 -- Data for Name: albums; Type: TABLE DATA; Schema: public; Owner: psqluser
@@ -260,6 +246,3 @@ SELECT pg_catalog.setval('public.users_id_seq', 11, true);
 --
 -- PostgreSQL database dump complete
 --
-
-\unrestrict hy8SXk3sFr2qKbCbpm5qxAgXWzfUAUHlzYnvT7Q6pm8WeuaNBqk5kaFFlQsQf1t
-

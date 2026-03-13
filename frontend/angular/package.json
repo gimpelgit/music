@@ -8,8 +8,8 @@
   "license": "ISC",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build"
+    "start": "ng serve --configuration development",
+    "build": "ng build --configuration production"
   },
   "dependencies": {
     "@angular/animations": "^21.2.1",
