@@ -2,6 +2,7 @@ import { Injectable, signal, computed } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap, catchError, throwError } from 'rxjs';
 import { LoginRequest, RegisterRequest, AuthResponse, User, AuthState } from '../models/auth.models';
+import { PlayerService } from './player.service';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +28,10 @@ export class AuthService {
   
   readonly isAdmin = computed(() => this.state().user?.role === 'ROLE_ADMIN');
 
-  constructor(private readonly http: HttpClient) {
+  constructor(
+    private readonly http: HttpClient,
+    private readonly playerService: PlayerService
+  ) {
     this.loadStoredAuth();
   }
 
@@ -90,9 +94,13 @@ export class AuthService {
 
     return this.http.post(`${this.apiUrl}/logout`, {})
       .pipe(
-        tap(() => this.clearAuth()),
+        tap(() => {
+          this.clearAuth()
+          this.playerService.stopAndClear();
+        }),
         catchError(error => {
           this.clearAuth();
+          this.playerService.stopAndClear();
           return throwError(() => error);
         })
       );

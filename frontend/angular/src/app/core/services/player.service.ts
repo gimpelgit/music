@@ -146,6 +146,25 @@ export class PlayerService {
     }));
   }
 
+  stopAndClear(): void {
+    if (this.audioElement) {
+      this.audioElement.pause();
+      this.audioElement.currentTime = 0;
+      this.audioElement.src = '';
+    }
+    
+    this.state.set({
+      currentTrack: null,
+      isPlaying: false,
+      currentTime: 0,
+      duration: 0,
+      volume: this.state().volume,
+      isMuted: this.state().isMuted,
+      queue: [],
+      queueIndex: -1
+    });
+  }
+
   seek(time: number): void {
     if (this.audioElement && this.state().duration) {
       const newTime = Math.max(0, Math.min(time, this.state().duration));

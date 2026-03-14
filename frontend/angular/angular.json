@@ -45,8 +45,7 @@
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true,
-              "namedChunks": true,
-              "buildOptimizer": false
+              "namedChunks": true
             }
           },
           "defaultConfiguration": "development"

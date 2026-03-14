@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterOutlet, Router } from '@angular/router';
+import { RouterOutlet, Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { PlayerComponent } from './shared/components/player/player.component';
 import { AuthService } from './core/services/auth.service';
@@ -11,6 +11,7 @@ import { NotificationService } from './core/services/notification.service';
   imports: [
     CommonModule, 
     RouterOutlet,
+    RouterLink,
     PlayerComponent
   ],
   templateUrl: './app.component.html',

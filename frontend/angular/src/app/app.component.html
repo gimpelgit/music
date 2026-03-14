@@ -1,18 +1,18 @@
 <nav class="navbar navbar-expand navbar-dark bg-primary">
   <div class="container-fluid">
-    <a class="navbar-brand" routerLink="/" href="/">{{ title }}</a>
+    <a class="navbar-brand" routerLink="/">{{ title }}</a>
     
     <div class="navbar-nav me-auto">
       @if (authService.isAuthenticated()) {
-        <a class="nav-link" routerLink="/albums" href="/albums">
+        <a class="nav-link" routerLink="/albums">
           <i class="bi bi-disc me-1"></i>
           Альбомы
         </a>
-        <a class="nav-link" routerLink="/playlists/public" href="/playlists/public">
+        <a class="nav-link" routerLink="/playlists/public">
           <i class="bi bi-globe me-1"></i>
           Публичные плейлисты
         </a>
-        <a class="nav-link" routerLink="/playlists" href="/playlists">
+        <a class="nav-link" routerLink="/playlists">
           <i class="bi bi-music-note-list me-1"></i>
           Мои плейлисты
         </a>
@@ -22,12 +22,12 @@
     <div class="navbar-nav ms-auto">
       @if (authService.isAuthenticated()) {
         @if (authService.isAdmin()) {
-          <a class="nav-link" routerLink="/admin" href="/admin">
+          <a class="nav-link" routerLink="/admin">
             <i class="bi bi-shield-lock me-1"></i>
             Админка
           </a>
         }
-        <a class="nav-link" routerLink="/profile" href="/profile">
+        <a class="nav-link" routerLink="/profile">
           <i class="bi bi-person-circle me-1"></i>
           {{ authService.user()?.name }}
         </a>
@@ -36,11 +36,11 @@
           Выйти
         </button>
       } @else {
-        <a class="nav-link" routerLink="/login" href="/login">
+        <a class="nav-link" routerLink="/login">
           <i class="bi bi-box-arrow-in-right me-1"></i>
           Войти
         </a>
-        <a class="nav-link" routerLink="/register" href="/register">
+        <a class="nav-link" routerLink="/register">
           <i class="bi bi-person-plus me-1"></i>
           Регистрация
         </a>
