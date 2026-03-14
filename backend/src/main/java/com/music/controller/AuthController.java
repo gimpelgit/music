@@ -4,6 +4,7 @@ import com.music.dto.auth.JwtAuthenticationResponse;
 import com.music.dto.auth.LoginRequest;
 import com.music.dto.auth.RegisterRequest;
 import com.music.dto.response.SuccessResponse;
+import com.music.dto.response.UserDto;
 import com.music.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,11 @@ public class AuthController {
   @PostMapping("/login")
   public JwtAuthenticationResponse login(@Valid @RequestBody LoginRequest request) {
     return authService.login(request);
+  }
+
+  @GetMapping("/me")
+  public ResponseEntity<UserDto> getCurrentUser() {
+    return ResponseEntity.ok(authService.getCurrentUser());
   }
 
   @PostMapping("/logout")

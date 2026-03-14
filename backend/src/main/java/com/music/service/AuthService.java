@@ -3,6 +3,7 @@ package com.music.service;
 import com.music.dto.auth.JwtAuthenticationResponse;
 import com.music.dto.auth.LoginRequest;
 import com.music.dto.auth.RegisterRequest;
+import com.music.dto.response.UserDto;
 import com.music.entity.User;
 import com.music.enumeration.Role;
 import lombok.RequiredArgsConstructor;
@@ -55,5 +56,9 @@ public class AuthService {
 
   public void logout() {
     SecurityContextHolder.clearContext();
+  }
+
+  public UserDto getCurrentUser() {
+    return User.convertToDto(userService.getCurrentUser());
   }
 }

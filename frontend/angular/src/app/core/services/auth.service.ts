@@ -1,6 +1,6 @@
 import { Injectable, signal, computed } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap, catchError, throwError } from 'rxjs';
+import { Observable, tap, catchError, throwError, of, map } from 'rxjs';
 import { LoginRequest, RegisterRequest, AuthResponse, User, AuthState } from '../models/auth.models';
 import { PlayerService } from './player.service';
 
@@ -104,6 +104,20 @@ export class AuthService {
           return throwError(() => error);
         })
       );
+  }
+
+  checkAdminRole(): Observable<boolean> {
+    if (!this.isAuthenticated()) {
+      return of(false);
+    }
+
+    return this.http.get<User>(`${this.apiUrl}/me`).pipe(
+      tap(user => {
+        this.updateUserInfo(user);
+      }),
+      map(user => user.role === 'ROLE_ADMIN'),
+      catchError(() => of(false))
+    );
   }
 
 
